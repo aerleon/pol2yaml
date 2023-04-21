@@ -1,0 +1,35 @@
+{
+  "name": "pol2yaml",
+  "version": "0.9.1",
+  "description": "pol2yaml - convert Capirca policy and net/svc files to YAML",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aerleon/pol2yaml.git"
+  },
+  "keywords": [
+    "security",
+    "firewall",
+    "acl",
+    "network",
+    "automation",
+    "capirca",
+    "aerleon"
+  ],
+  "author": "Jason Benterou <jason.benterou@gmail.com>",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/aerleon/pol2yaml/issues"
+  },
+  "homepage": "https://github.com/aerleon/pol2yaml#readme",
+  "devDependencies": {
+    "jest": "^29.5.0"
+  },
+  "dependencies": {
+    "antlr4": "^4.12.0",
+    "yaml": "^2.2.1"
+  }
+}
