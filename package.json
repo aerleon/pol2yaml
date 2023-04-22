@@ -2,9 +2,11 @@
   "name": "pol2yaml",
   "version": "0.9.1",
   "description": "pol2yaml - convert Capirca policy and net/svc files to YAML",
-  "main": "index.js",
+  "exports": "./index.js",
+  "type": "module",
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "ts": "nodemon --exec ./node_modules/.bin/ts-node -- ./index.ts"
   },
   "repository": {
     "type": "git",
@@ -31,5 +33,8 @@
   "dependencies": {
     "antlr4": "^4.12.0",
     "yaml": "^2.2.1"
+  },
+  "engines": {
+    "node": ">=14.16"
   }
 }
