@@ -77,6 +77,11 @@ fragment EXP
 
 // \- since - means "range" inside [...]
 
+LINE_COMMENT
+    // pretend that JSON supports comments
+    : '//' .*? [\n\r] -> channel(HIDDEN)
+    ;
+
 WS
    : [ \t\n\r] + -> skip
    ;

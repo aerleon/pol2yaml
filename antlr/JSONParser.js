@@ -1,8 +1,9 @@
 // Generated from antlr/JSON.g4 by ANTLR 4.12.0
 // jshint ignore: start
 import antlr4 from 'antlr4';
-import JSONListener from './JSONListener.js';
-const serializedATN = [4,1,12,57,2,0,7,0,2,1,7,1,2,2,7,2,2,3,7,3,2,4,7,4,
+import JSONVisitor from './JSONVisitor.js';
+
+const serializedATN = [4,1,13,57,2,0,7,0,2,1,7,1,2,2,7,2,2,3,7,3,2,4,7,4,
 1,0,1,0,1,0,1,1,1,1,1,1,1,1,5,1,18,8,1,10,1,12,1,21,9,1,1,1,1,1,1,1,1,1,
 3,1,27,8,1,1,2,1,2,1,2,1,2,1,3,1,3,1,3,1,3,5,3,37,8,3,10,3,12,3,40,9,3,1,
 3,1,3,1,3,1,3,3,3,46,8,3,1,4,1,4,1,4,1,4,1,4,1,4,1,4,3,4,55,8,4,1,4,0,0,
@@ -33,7 +34,8 @@ export default class JSONParser extends antlr4.Parser {
     static literalNames = [ null, "'{'", "','", "'}'", "':'", "'['", "']'", 
                             "'true'", "'false'", "'null'" ];
     static symbolicNames = [ null, null, null, null, null, null, null, null, 
-                             null, null, "STRING", "NUMBER", "WS" ];
+                             null, null, "STRING", "NUMBER", "LINE_COMMENT", 
+                             "WS" ];
     static ruleNames = [ "json", "obj", "pair", "arr", "value" ];
 
     constructor(input) {
@@ -284,7 +286,8 @@ JSONParser.T__7 = 8;
 JSONParser.T__8 = 9;
 JSONParser.STRING = 10;
 JSONParser.NUMBER = 11;
-JSONParser.WS = 12;
+JSONParser.LINE_COMMENT = 12;
+JSONParser.WS = 13;
 
 JSONParser.RULE_json = 0;
 JSONParser.RULE_obj = 1;
@@ -314,16 +317,12 @@ class JsonContext extends antlr4.ParserRuleContext {
 	    return this.getToken(JSONParser.EOF, 0);
 	};
 
-	enterRule(listener) {
-	    if(listener instanceof JSONListener ) {
-	        listener.enterJson(this);
-		}
-	}
-
-	exitRule(listener) {
-	    if(listener instanceof JSONListener ) {
-	        listener.exitJson(this);
-		}
+	accept(visitor) {
+	    if ( visitor instanceof JSONVisitor ) {
+	        return visitor.visitJson(this);
+	    } else {
+	        return visitor.visitChildren(this);
+	    }
 	}
 
 
@@ -356,16 +355,12 @@ class ObjContext extends antlr4.ParserRuleContext {
 	    }
 	};
 
-	enterRule(listener) {
-	    if(listener instanceof JSONListener ) {
-	        listener.enterObj(this);
-		}
-	}
-
-	exitRule(listener) {
-	    if(listener instanceof JSONListener ) {
-	        listener.exitObj(this);
-		}
+	accept(visitor) {
+	    if ( visitor instanceof JSONVisitor ) {
+	        return visitor.visitObj(this);
+	    } else {
+	        return visitor.visitChildren(this);
+	    }
 	}
 
 
@@ -395,16 +390,12 @@ class PairContext extends antlr4.ParserRuleContext {
 	    return this.getTypedRuleContext(ValueContext,0);
 	};
 
-	enterRule(listener) {
-	    if(listener instanceof JSONListener ) {
-	        listener.enterPair(this);
-		}
-	}
-
-	exitRule(listener) {
-	    if(listener instanceof JSONListener ) {
-	        listener.exitPair(this);
-		}
+	accept(visitor) {
+	    if ( visitor instanceof JSONVisitor ) {
+	        return visitor.visitPair(this);
+	    } else {
+	        return visitor.visitChildren(this);
+	    }
 	}
 
 
@@ -437,16 +428,12 @@ class ArrContext extends antlr4.ParserRuleContext {
 	    }
 	};
 
-	enterRule(listener) {
-	    if(listener instanceof JSONListener ) {
-	        listener.enterArr(this);
-		}
-	}
-
-	exitRule(listener) {
-	    if(listener instanceof JSONListener ) {
-	        listener.exitArr(this);
-		}
+	accept(visitor) {
+	    if ( visitor instanceof JSONVisitor ) {
+	        return visitor.visitArr(this);
+	    } else {
+	        return visitor.visitChildren(this);
+	    }
 	}
 
 
@@ -484,16 +471,12 @@ class ValueContext extends antlr4.ParserRuleContext {
 	    return this.getTypedRuleContext(ArrContext,0);
 	};
 
-	enterRule(listener) {
-	    if(listener instanceof JSONListener ) {
-	        listener.enterValue(this);
-		}
-	}
-
-	exitRule(listener) {
-	    if(listener instanceof JSONListener ) {
-	        listener.exitValue(this);
-		}
+	accept(visitor) {
+	    if ( visitor instanceof JSONVisitor ) {
+	        return visitor.visitValue(this);
+	    } else {
+	        return visitor.visitChildren(this);
+	    }
 	}
 
 
