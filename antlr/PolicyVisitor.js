@@ -90,12 +90,6 @@ export default class PolicyVisitor extends antlr4.tree.ParseTreeVisitor {
 	}
 
 
-	// Visit a parse tree produced by PolicyParser#verbatim_rhs.
-	visitVerbatim_rhs(ctx) {
-	  return this.visitChildren(ctx);
-	}
-
-
 	// Visit a parse tree produced by PolicyParser#verbatim_lhs.
 	visitVerbatim_lhs(ctx) {
 	  return this.visitChildren(ctx);
@@ -104,12 +98,6 @@ export default class PolicyVisitor extends antlr4.tree.ParseTreeVisitor {
 
 	// Visit a parse tree produced by PolicyParser#vpn_rule.
 	visitVpn_rule(ctx) {
-	  return this.visitChildren(ctx);
-	}
-
-
-	// Visit a parse tree produced by PolicyParser#vpn_rhs.
-	visitVpn_rhs(ctx) {
 	  return this.visitChildren(ctx);
 	}
 

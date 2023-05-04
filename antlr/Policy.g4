@@ -118,11 +118,7 @@ flexible_match_lhs
     ;
 
 verbatim_rule
-    : verbatim_lhs ':' ':' verbatim_rhs 
-    ;
-
-verbatim_rhs
-    : STRING (DOUBLE_QUOTED_STRING | ESCAPED_STRING)
+    : verbatim_lhs ':' ':' platform=STRING text=(DOUBLE_QUOTED_STRING | ESCAPED_STRING)
     ;
 
 verbatim_lhs
@@ -130,12 +126,7 @@ verbatim_lhs
     ;
 
 vpn_rule
-    : vpn_lhs ':' ':' vpn_rhs 
-    ;
-
-vpn_rhs
-    : STRING STRING
-    | STRING
+    : vpn_lhs ':' ':' name=STRING pair_policy=STRING?
     ;
 
 vpn_lhs
