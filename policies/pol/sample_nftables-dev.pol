@@ -1,0 +1,42 @@
+#
+# NFTables generator policy example.
+# Intended to render ICMP terms for both IPv4 and IPv6 families.
+#
+
+header {
+  comment:: "This policy validates handling of term.option tcp-established."
+  comment:: "and UDP 'established'"
+  target:: nftables inet6 INPUT
+}
+
+term accept-webserver-traffic {
+  comment:: "Allow webserver inbound traffic."
+  destination-address:: WEB_SERVERS
+  destination-port:: WEB_SERVICES
+  protocol:: tcp
+  action:: accept
+}
+
+term test-tcp-established {
+  comment:: "Allow tcp-established traffic."
+  destination-address:: MAIL_SERVERS WEB_SERVERS PUBLIC_NAT
+  protocol:: tcp udp
+  action:: accept
+}
+
+term permit-tcp-replies {
+  option:: tcp-established
+  action:: accept
+}
+
+term test-dns-replies {
+  comment:: "Allow DNS replies, and test udp established option."
+  comment:: "This should not be generated since this is a stateful policy."
+  source-port:: DNS
+  destination-address:: INTERNAL
+  protocol:: udp
+  logging:: syslog
+  counter:: dns-counter
+  action:: accept
+}
+
