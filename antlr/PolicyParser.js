@@ -3,60 +3,59 @@
 import antlr4 from 'antlr4';
 import PolicyVisitor from './PolicyVisitor.js';
 
-const serializedATN = [4,1,90,177,2,0,7,0,2,1,7,1,2,2,7,2,2,3,7,3,2,4,7,
+const serializedATN = [4,1,90,175,2,0,7,0,2,1,7,1,2,2,7,2,2,3,7,3,2,4,7,
 4,2,5,7,5,2,6,7,6,2,7,7,7,2,8,7,8,2,9,7,9,2,10,7,10,2,11,7,11,2,12,7,12,
 2,13,7,13,2,14,7,14,2,15,7,15,2,16,7,16,2,17,7,17,2,18,7,18,2,19,7,19,2,
-20,7,20,2,21,7,21,1,0,5,0,46,8,0,10,0,12,0,49,9,0,1,0,1,0,1,1,1,1,4,1,55,
-8,1,11,1,12,1,56,1,2,1,2,1,2,1,2,1,2,5,2,64,8,2,10,2,12,2,67,9,2,1,2,1,2,
-1,3,1,3,1,3,1,3,1,3,1,3,5,3,77,8,3,10,3,12,3,80,9,3,1,3,1,3,1,4,1,4,1,4,
-1,4,1,4,1,4,3,4,90,8,4,1,5,1,5,1,5,1,5,1,5,1,6,1,6,1,7,1,7,1,7,1,7,5,7,103,
-8,7,10,7,12,7,106,9,7,1,8,1,8,1,9,1,9,1,9,1,9,1,9,1,10,1,10,1,11,1,11,1,
-11,1,11,1,11,1,12,1,12,1,13,1,13,1,13,1,13,1,13,1,13,1,14,1,14,1,15,1,15,
-1,15,1,15,1,15,3,15,137,8,15,1,16,1,16,1,17,1,17,1,17,1,17,1,17,1,17,1,17,
-3,17,148,8,17,1,17,1,17,1,17,1,17,1,17,5,17,155,8,17,10,17,12,17,158,9,17,
-1,18,1,18,1,18,1,18,1,18,1,18,1,19,5,19,167,8,19,10,19,12,19,170,9,19,1,
-20,1,20,1,20,1,21,1,21,1,21,0,1,34,22,0,2,4,6,8,10,12,14,16,18,20,22,24,
-26,28,30,32,34,36,38,40,42,0,5,18,0,6,6,9,11,14,14,22,23,25,26,30,30,32,
-32,37,38,40,41,43,44,47,47,49,49,51,51,54,54,56,56,59,59,68,69,71,71,16,
-0,7,8,12,13,15,21,24,24,28,29,33,36,42,42,45,46,48,48,50,50,52,53,55,55,
-57,58,60,65,67,67,70,70,1,0,75,76,1,0,81,83,3,0,74,74,76,80,82,83,170,0,
-47,1,0,0,0,2,52,1,0,0,0,4,58,1,0,0,0,6,70,1,0,0,0,8,89,1,0,0,0,10,91,1,0,
-0,0,12,96,1,0,0,0,14,98,1,0,0,0,16,107,1,0,0,0,18,109,1,0,0,0,20,114,1,0,
-0,0,22,116,1,0,0,0,24,121,1,0,0,0,26,123,1,0,0,0,28,129,1,0,0,0,30,131,1,
-0,0,0,32,138,1,0,0,0,34,147,1,0,0,0,36,159,1,0,0,0,38,168,1,0,0,0,40,171,
-1,0,0,0,42,174,1,0,0,0,44,46,3,2,1,0,45,44,1,0,0,0,46,49,1,0,0,0,47,45,1,
-0,0,0,47,48,1,0,0,0,48,50,1,0,0,0,49,47,1,0,0,0,50,51,5,0,0,1,51,1,1,0,0,
-0,52,54,3,4,2,0,53,55,3,6,3,0,54,53,1,0,0,0,55,56,1,0,0,0,56,54,1,0,0,0,
-56,57,1,0,0,0,57,3,1,0,0,0,58,59,5,4,0,0,59,60,5,84,0,0,60,61,5,84,0,0,61,
-65,5,85,0,0,62,64,3,8,4,0,63,62,1,0,0,0,64,67,1,0,0,0,65,63,1,0,0,0,65,66,
-1,0,0,0,66,68,1,0,0,0,67,65,1,0,0,0,68,69,5,86,0,0,69,5,1,0,0,0,70,71,5,
-5,0,0,71,72,5,83,0,0,72,73,5,84,0,0,73,74,5,84,0,0,74,78,5,85,0,0,75,77,
-3,8,4,0,76,75,1,0,0,0,77,80,1,0,0,0,78,76,1,0,0,0,78,79,1,0,0,0,79,81,1,
-0,0,0,80,78,1,0,0,0,81,82,5,86,0,0,82,7,1,0,0,0,83,90,3,10,5,0,84,90,3,14,
-7,0,85,90,3,18,9,0,86,90,3,22,11,0,87,90,3,26,13,0,88,90,3,30,15,0,89,83,
-1,0,0,0,89,84,1,0,0,0,89,85,1,0,0,0,89,86,1,0,0,0,89,87,1,0,0,0,89,88,1,
-0,0,0,90,9,1,0,0,0,91,92,3,12,6,0,92,93,5,84,0,0,93,94,5,84,0,0,94,95,3,
-42,21,0,95,11,1,0,0,0,96,97,7,0,0,0,97,13,1,0,0,0,98,99,3,16,8,0,99,100,
-5,84,0,0,100,104,5,84,0,0,101,103,3,42,21,0,102,101,1,0,0,0,103,106,1,0,
-0,0,104,102,1,0,0,0,104,105,1,0,0,0,105,15,1,0,0,0,106,104,1,0,0,0,107,108,
-7,1,0,0,108,17,1,0,0,0,109,110,3,20,10,0,110,111,5,84,0,0,111,112,5,84,0,
-0,112,113,3,34,17,0,113,19,1,0,0,0,114,115,5,66,0,0,115,21,1,0,0,0,116,117,
-3,24,12,0,117,118,5,84,0,0,118,119,5,84,0,0,119,120,3,38,19,0,120,23,1,0,
-0,0,121,122,5,27,0,0,122,25,1,0,0,0,123,124,3,28,14,0,124,125,5,84,0,0,125,
-126,5,84,0,0,126,127,5,83,0,0,127,128,7,2,0,0,128,27,1,0,0,0,129,130,5,72,
-0,0,130,29,1,0,0,0,131,132,3,32,16,0,132,133,5,84,0,0,133,134,5,84,0,0,134,
-136,5,83,0,0,135,137,5,83,0,0,136,135,1,0,0,0,136,137,1,0,0,0,137,31,1,0,
-0,0,138,139,5,73,0,0,139,33,1,0,0,0,140,141,6,17,-1,0,141,142,5,87,0,0,142,
-143,3,34,17,0,143,144,5,88,0,0,144,148,1,0,0,0,145,148,3,36,18,0,146,148,
-1,0,0,0,147,140,1,0,0,0,147,145,1,0,0,0,147,146,1,0,0,0,148,156,1,0,0,0,
-149,150,10,4,0,0,150,151,5,1,0,0,151,155,3,36,18,0,152,153,10,3,0,0,153,
-155,3,36,18,0,154,149,1,0,0,0,154,152,1,0,0,0,155,158,1,0,0,0,156,154,1,
-0,0,0,156,157,1,0,0,0,157,35,1,0,0,0,158,156,1,0,0,0,159,160,5,2,0,0,160,
-161,5,83,0,0,161,162,5,1,0,0,162,163,5,83,0,0,163,164,5,3,0,0,164,37,1,0,
-0,0,165,167,3,40,20,0,166,165,1,0,0,0,167,170,1,0,0,0,168,166,1,0,0,0,168,
-169,1,0,0,0,169,39,1,0,0,0,170,168,1,0,0,0,171,172,5,83,0,0,172,173,7,3,
-0,0,173,41,1,0,0,0,174,175,7,4,0,0,175,43,1,0,0,0,11,47,56,65,78,89,104,
-136,147,154,156,168];
+20,7,20,2,21,7,21,2,22,7,22,2,23,7,23,1,0,5,0,50,8,0,10,0,12,0,53,9,0,1,
+0,1,0,1,1,1,1,1,1,1,2,4,2,61,8,2,11,2,12,2,62,1,3,1,3,1,3,1,3,1,3,1,4,1,
+4,1,4,1,4,1,4,1,4,1,5,5,5,77,8,5,10,5,12,5,80,9,5,1,6,1,6,1,6,1,6,1,6,1,
+6,3,6,88,8,6,1,7,1,7,1,7,1,7,1,7,1,8,1,8,1,9,1,9,1,9,1,9,5,9,101,8,9,10,
+9,12,9,104,9,9,1,10,1,10,1,11,1,11,1,11,1,11,1,11,1,12,1,12,1,13,1,13,1,
+13,1,13,1,13,1,14,1,14,1,15,1,15,1,15,1,15,1,15,1,15,1,16,1,16,1,17,1,17,
+1,17,1,17,1,17,3,17,135,8,17,1,18,1,18,1,19,1,19,1,19,1,19,1,19,1,19,1,19,
+3,19,146,8,19,1,19,1,19,1,19,1,19,1,19,5,19,153,8,19,10,19,12,19,156,9,19,
+1,20,1,20,1,20,1,20,1,20,1,20,1,21,5,21,165,8,21,10,21,12,21,168,9,21,1,
+22,1,22,1,22,1,23,1,23,1,23,0,1,38,24,0,2,4,6,8,10,12,14,16,18,20,22,24,
+26,28,30,32,34,36,38,40,42,44,46,0,5,18,0,6,6,9,11,14,14,22,23,25,26,30,
+30,32,32,37,38,40,41,43,44,47,47,49,49,51,51,54,54,56,56,59,59,68,69,71,
+71,16,0,7,8,12,13,15,21,24,24,28,29,33,36,42,42,45,46,48,48,50,50,52,53,
+55,55,57,58,60,65,67,67,70,70,1,0,75,76,1,0,81,83,3,0,74,74,76,80,82,83,
+165,0,51,1,0,0,0,2,56,1,0,0,0,4,60,1,0,0,0,6,64,1,0,0,0,8,69,1,0,0,0,10,
+78,1,0,0,0,12,87,1,0,0,0,14,89,1,0,0,0,16,94,1,0,0,0,18,96,1,0,0,0,20,105,
+1,0,0,0,22,107,1,0,0,0,24,112,1,0,0,0,26,114,1,0,0,0,28,119,1,0,0,0,30,121,
+1,0,0,0,32,127,1,0,0,0,34,129,1,0,0,0,36,136,1,0,0,0,38,145,1,0,0,0,40,157,
+1,0,0,0,42,166,1,0,0,0,44,169,1,0,0,0,46,172,1,0,0,0,48,50,3,2,1,0,49,48,
+1,0,0,0,50,53,1,0,0,0,51,49,1,0,0,0,51,52,1,0,0,0,52,54,1,0,0,0,53,51,1,
+0,0,0,54,55,5,0,0,1,55,1,1,0,0,0,56,57,3,6,3,0,57,58,3,4,2,0,58,3,1,0,0,
+0,59,61,3,8,4,0,60,59,1,0,0,0,61,62,1,0,0,0,62,60,1,0,0,0,62,63,1,0,0,0,
+63,5,1,0,0,0,64,65,5,4,0,0,65,66,5,85,0,0,66,67,3,10,5,0,67,68,5,86,0,0,
+68,7,1,0,0,0,69,70,5,5,0,0,70,71,5,83,0,0,71,72,5,85,0,0,72,73,3,10,5,0,
+73,74,5,86,0,0,74,9,1,0,0,0,75,77,3,12,6,0,76,75,1,0,0,0,77,80,1,0,0,0,78,
+76,1,0,0,0,78,79,1,0,0,0,79,11,1,0,0,0,80,78,1,0,0,0,81,88,3,14,7,0,82,88,
+3,18,9,0,83,88,3,22,11,0,84,88,3,26,13,0,85,88,3,30,15,0,86,88,3,34,17,0,
+87,81,1,0,0,0,87,82,1,0,0,0,87,83,1,0,0,0,87,84,1,0,0,0,87,85,1,0,0,0,87,
+86,1,0,0,0,88,13,1,0,0,0,89,90,3,16,8,0,90,91,5,84,0,0,91,92,5,84,0,0,92,
+93,3,46,23,0,93,15,1,0,0,0,94,95,7,0,0,0,95,17,1,0,0,0,96,97,3,20,10,0,97,
+98,5,84,0,0,98,102,5,84,0,0,99,101,3,46,23,0,100,99,1,0,0,0,101,104,1,0,
+0,0,102,100,1,0,0,0,102,103,1,0,0,0,103,19,1,0,0,0,104,102,1,0,0,0,105,106,
+7,1,0,0,106,21,1,0,0,0,107,108,3,24,12,0,108,109,5,84,0,0,109,110,5,84,0,
+0,110,111,3,38,19,0,111,23,1,0,0,0,112,113,5,66,0,0,113,25,1,0,0,0,114,115,
+3,28,14,0,115,116,5,84,0,0,116,117,5,84,0,0,117,118,3,42,21,0,118,27,1,0,
+0,0,119,120,5,27,0,0,120,29,1,0,0,0,121,122,3,32,16,0,122,123,5,84,0,0,123,
+124,5,84,0,0,124,125,5,83,0,0,125,126,7,2,0,0,126,31,1,0,0,0,127,128,5,72,
+0,0,128,33,1,0,0,0,129,130,3,36,18,0,130,131,5,84,0,0,131,132,5,84,0,0,132,
+134,5,83,0,0,133,135,5,83,0,0,134,133,1,0,0,0,134,135,1,0,0,0,135,35,1,0,
+0,0,136,137,5,73,0,0,137,37,1,0,0,0,138,139,6,19,-1,0,139,140,5,87,0,0,140,
+141,3,38,19,0,141,142,5,88,0,0,142,146,1,0,0,0,143,146,3,40,20,0,144,146,
+1,0,0,0,145,138,1,0,0,0,145,143,1,0,0,0,145,144,1,0,0,0,146,154,1,0,0,0,
+147,148,10,4,0,0,148,149,5,1,0,0,149,153,3,40,20,0,150,151,10,3,0,0,151,
+153,3,40,20,0,152,147,1,0,0,0,152,150,1,0,0,0,153,156,1,0,0,0,154,152,1,
+0,0,0,154,155,1,0,0,0,155,39,1,0,0,0,156,154,1,0,0,0,157,158,5,2,0,0,158,
+159,5,83,0,0,159,160,5,1,0,0,160,161,5,83,0,0,161,162,5,3,0,0,162,41,1,0,
+0,0,163,165,3,44,22,0,164,163,1,0,0,0,165,168,1,0,0,0,166,164,1,0,0,0,166,
+167,1,0,0,0,167,43,1,0,0,0,168,166,1,0,0,0,169,170,5,83,0,0,170,171,7,3,
+0,0,171,45,1,0,0,0,172,173,7,4,0,0,173,47,1,0,0,0,10,51,62,78,87,102,134,
+145,152,154,166];
 
 
 const atn = new antlr4.atn.ATNDeserializer().deserialize(serializedATN);
@@ -125,12 +124,13 @@ export default class PolicyParser extends antlr4.Parser {
                              "STRING", "SYM_COLON", "SYM_LBRACE", "SYM_RBRACE", 
                              "SYM_LBRACKET", "SYM_RBRACKET", "LINE_COMMENT", 
                              "WS" ];
-    static ruleNames = [ "policy", "filter", "header", "term", "policy_rule", 
-                         "value_rule", "value_lhs", "value_list_rule", "value_list_lhs", 
-                         "tuple_list_rule", "tuple_list_lhs", "flexible_match_rule", 
-                         "flexible_match_lhs", "verbatim_rule", "verbatim_lhs", 
-                         "vpn_rule", "vpn_lhs", "zero_or_more_tuples", "tuple", 
-                         "flex_match_key_values", "flex_match_pair", "value" ];
+    static ruleNames = [ "policy", "filter", "term_list", "header", "term", 
+                         "rule_list", "policy_rule", "value_rule", "value_lhs", 
+                         "value_list_rule", "value_list_lhs", "tuple_list_rule", 
+                         "tuple_list_lhs", "flexible_match_rule", "flexible_match_lhs", 
+                         "verbatim_rule", "verbatim_lhs", "vpn_rule", "vpn_lhs", 
+                         "zero_or_more_tuples", "tuple", "flex_match_key_values", 
+                         "flex_match_pair", "value" ];
 
     constructor(input) {
         super(input);
@@ -142,7 +142,7 @@ export default class PolicyParser extends antlr4.Parser {
 
     sempred(localctx, ruleIndex, predIndex) {
     	switch(ruleIndex) {
-    	case 17:
+    	case 19:
     	    		return this.zero_or_more_tuples_sempred(localctx, predIndex);
         default:
             throw "No predicate with index:" + ruleIndex;
@@ -169,17 +169,17 @@ export default class PolicyParser extends antlr4.Parser {
 	    var _la = 0;
 	    try {
 	        this.enterOuterAlt(localctx, 1);
-	        this.state = 47;
+	        this.state = 51;
 	        this._errHandler.sync(this);
 	        _la = this._input.LA(1);
 	        while(_la===4) {
-	            this.state = 44;
+	            this.state = 48;
 	            this.filter();
-	            this.state = 49;
+	            this.state = 53;
 	            this._errHandler.sync(this);
 	            _la = this._input.LA(1);
 	        }
-	        this.state = 50;
+	        this.state = 54;
 	        this.match(PolicyParser.EOF);
 	    } catch (re) {
 	    	if(re instanceof antlr4.error.RecognitionException) {
@@ -200,18 +200,41 @@ export default class PolicyParser extends antlr4.Parser {
 	filter() {
 	    let localctx = new FilterContext(this, this._ctx, this.state);
 	    this.enterRule(localctx, 2, PolicyParser.RULE_filter);
+	    try {
+	        this.enterOuterAlt(localctx, 1);
+	        this.state = 56;
+	        this.header();
+	        this.state = 57;
+	        this.term_list();
+	    } catch (re) {
+	    	if(re instanceof antlr4.error.RecognitionException) {
+		        localctx.exception = re;
+		        this._errHandler.reportError(this, re);
+		        this._errHandler.recover(this, re);
+		    } else {
+		    	throw re;
+		    }
+	    } finally {
+	        this.exitRule();
+	    }
+	    return localctx;
+	}
+
+
+
+	term_list() {
+	    let localctx = new Term_listContext(this, this._ctx, this.state);
+	    this.enterRule(localctx, 4, PolicyParser.RULE_term_list);
 	    var _la = 0;
 	    try {
 	        this.enterOuterAlt(localctx, 1);
-	        this.state = 52;
-	        this.header();
-	        this.state = 54; 
+	        this.state = 60; 
 	        this._errHandler.sync(this);
 	        _la = this._input.LA(1);
 	        do {
-	            this.state = 53;
+	            this.state = 59;
 	            this.term();
-	            this.state = 56; 
+	            this.state = 62; 
 	            this._errHandler.sync(this);
 	            _la = this._input.LA(1);
 	        } while(_la===5);
@@ -233,29 +256,16 @@ export default class PolicyParser extends antlr4.Parser {
 
 	header() {
 	    let localctx = new HeaderContext(this, this._ctx, this.state);
-	    this.enterRule(localctx, 4, PolicyParser.RULE_header);
-	    var _la = 0;
+	    this.enterRule(localctx, 6, PolicyParser.RULE_header);
 	    try {
 	        this.enterOuterAlt(localctx, 1);
-	        this.state = 58;
+	        this.state = 64;
 	        this.match(PolicyParser.KW_HEADER);
-	        this.state = 59;
-	        this.match(PolicyParser.SYM_COLON);
-	        this.state = 60;
-	        this.match(PolicyParser.SYM_COLON);
-	        this.state = 61;
-	        this.match(PolicyParser.SYM_LBRACE);
 	        this.state = 65;
-	        this._errHandler.sync(this);
-	        _la = this._input.LA(1);
-	        while((((_la) & ~0x1f) === 0 && ((1 << _la) & 2147483584) !== 0) || ((((_la - 32)) & ~0x1f) === 0 && ((1 << (_la - 32)) & 4294967167) !== 0) || ((((_la - 64)) & ~0x1f) === 0 && ((1 << (_la - 64)) & 1023) !== 0)) {
-	            this.state = 62;
-	            this.policy_rule();
-	            this.state = 67;
-	            this._errHandler.sync(this);
-	            _la = this._input.LA(1);
-	        }
-	        this.state = 68;
+	        this.match(PolicyParser.SYM_LBRACE);
+	        this.state = 66;
+	        this.rule_list();
+	        this.state = 67;
 	        this.match(PolicyParser.SYM_RBRACE);
 	    } catch (re) {
 	    	if(re instanceof antlr4.error.RecognitionException) {
@@ -275,20 +285,41 @@ export default class PolicyParser extends antlr4.Parser {
 
 	term() {
 	    let localctx = new TermContext(this, this._ctx, this.state);
-	    this.enterRule(localctx, 6, PolicyParser.RULE_term);
+	    this.enterRule(localctx, 8, PolicyParser.RULE_term);
+	    try {
+	        this.enterOuterAlt(localctx, 1);
+	        this.state = 69;
+	        this.match(PolicyParser.KW_TERM);
+	        this.state = 70;
+	        localctx.term_name = this.match(PolicyParser.STRING);
+	        this.state = 71;
+	        this.match(PolicyParser.SYM_LBRACE);
+	        this.state = 72;
+	        this.rule_list();
+	        this.state = 73;
+	        this.match(PolicyParser.SYM_RBRACE);
+	    } catch (re) {
+	    	if(re instanceof antlr4.error.RecognitionException) {
+		        localctx.exception = re;
+		        this._errHandler.reportError(this, re);
+		        this._errHandler.recover(this, re);
+		    } else {
+		    	throw re;
+		    }
+	    } finally {
+	        this.exitRule();
+	    }
+	    return localctx;
+	}
+
+
+
+	rule_list() {
+	    let localctx = new Rule_listContext(this, this._ctx, this.state);
+	    this.enterRule(localctx, 10, PolicyParser.RULE_rule_list);
 	    var _la = 0;
 	    try {
 	        this.enterOuterAlt(localctx, 1);
-	        this.state = 70;
-	        this.match(PolicyParser.KW_TERM);
-	        this.state = 71;
-	        localctx.term_name = this.match(PolicyParser.STRING);
-	        this.state = 72;
-	        this.match(PolicyParser.SYM_COLON);
-	        this.state = 73;
-	        this.match(PolicyParser.SYM_COLON);
-	        this.state = 74;
-	        this.match(PolicyParser.SYM_LBRACE);
 	        this.state = 78;
 	        this._errHandler.sync(this);
 	        _la = this._input.LA(1);
@@ -299,8 +330,6 @@ export default class PolicyParser extends antlr4.Parser {
 	            this._errHandler.sync(this);
 	            _la = this._input.LA(1);
 	        }
-	        this.state = 81;
-	        this.match(PolicyParser.SYM_RBRACE);
 	    } catch (re) {
 	    	if(re instanceof antlr4.error.RecognitionException) {
 		        localctx.exception = re;
@@ -319,9 +348,9 @@ export default class PolicyParser extends antlr4.Parser {
 
 	policy_rule() {
 	    let localctx = new Policy_ruleContext(this, this._ctx, this.state);
-	    this.enterRule(localctx, 8, PolicyParser.RULE_policy_rule);
+	    this.enterRule(localctx, 12, PolicyParser.RULE_policy_rule);
 	    try {
-	        this.state = 89;
+	        this.state = 87;
 	        this._errHandler.sync(this);
 	        switch(this._input.LA(1)) {
 	        case 6:
@@ -351,7 +380,7 @@ export default class PolicyParser extends antlr4.Parser {
 	        case 69:
 	        case 71:
 	            this.enterOuterAlt(localctx, 1);
-	            this.state = 83;
+	            this.state = 81;
 	            this.value_rule();
 	            break;
 	        case 7:
@@ -391,27 +420,27 @@ export default class PolicyParser extends antlr4.Parser {
 	        case 67:
 	        case 70:
 	            this.enterOuterAlt(localctx, 2);
-	            this.state = 84;
+	            this.state = 82;
 	            this.value_list_rule();
 	            break;
 	        case 66:
 	            this.enterOuterAlt(localctx, 3);
-	            this.state = 85;
+	            this.state = 83;
 	            this.tuple_list_rule();
 	            break;
 	        case 27:
 	            this.enterOuterAlt(localctx, 4);
-	            this.state = 86;
+	            this.state = 84;
 	            this.flexible_match_rule();
 	            break;
 	        case 72:
 	            this.enterOuterAlt(localctx, 5);
-	            this.state = 87;
+	            this.state = 85;
 	            this.verbatim_rule();
 	            break;
 	        case 73:
 	            this.enterOuterAlt(localctx, 6);
-	            this.state = 88;
+	            this.state = 86;
 	            this.vpn_rule();
 	            break;
 	        default:
@@ -435,16 +464,16 @@ export default class PolicyParser extends antlr4.Parser {
 
 	value_rule() {
 	    let localctx = new Value_ruleContext(this, this._ctx, this.state);
-	    this.enterRule(localctx, 10, PolicyParser.RULE_value_rule);
+	    this.enterRule(localctx, 14, PolicyParser.RULE_value_rule);
 	    try {
 	        this.enterOuterAlt(localctx, 1);
-	        this.state = 91;
+	        this.state = 89;
 	        this.value_lhs();
+	        this.state = 90;
+	        this.match(PolicyParser.SYM_COLON);
+	        this.state = 91;
+	        this.match(PolicyParser.SYM_COLON);
 	        this.state = 92;
-	        this.match(PolicyParser.SYM_COLON);
-	        this.state = 93;
-	        this.match(PolicyParser.SYM_COLON);
-	        this.state = 94;
 	        this.value();
 	    } catch (re) {
 	    	if(re instanceof antlr4.error.RecognitionException) {
@@ -464,11 +493,11 @@ export default class PolicyParser extends antlr4.Parser {
 
 	value_lhs() {
 	    let localctx = new Value_lhsContext(this, this._ctx, this.state);
-	    this.enterRule(localctx, 12, PolicyParser.RULE_value_lhs);
+	    this.enterRule(localctx, 16, PolicyParser.RULE_value_lhs);
 	    var _la = 0;
 	    try {
 	        this.enterOuterAlt(localctx, 1);
-	        this.state = 96;
+	        this.state = 94;
 	        _la = this._input.LA(1);
 	        if(!((((_la) & ~0x1f) === 0 && ((1 << _la) & 1187008064) !== 0) || ((((_la - 32)) & ~0x1f) === 0 && ((1 << (_la - 32)) & 155884385) !== 0) || ((((_la - 68)) & ~0x1f) === 0 && ((1 << (_la - 68)) & 11) !== 0))) {
 	        this._errHandler.recoverInline(this);
@@ -495,23 +524,23 @@ export default class PolicyParser extends antlr4.Parser {
 
 	value_list_rule() {
 	    let localctx = new Value_list_ruleContext(this, this._ctx, this.state);
-	    this.enterRule(localctx, 14, PolicyParser.RULE_value_list_rule);
+	    this.enterRule(localctx, 18, PolicyParser.RULE_value_list_rule);
 	    var _la = 0;
 	    try {
 	        this.enterOuterAlt(localctx, 1);
-	        this.state = 98;
+	        this.state = 96;
 	        this.value_list_lhs();
-	        this.state = 99;
+	        this.state = 97;
 	        this.match(PolicyParser.SYM_COLON);
-	        this.state = 100;
+	        this.state = 98;
 	        this.match(PolicyParser.SYM_COLON);
-	        this.state = 104;
+	        this.state = 102;
 	        this._errHandler.sync(this);
 	        _la = this._input.LA(1);
 	        while(((((_la - 74)) & ~0x1f) === 0 && ((1 << (_la - 74)) & 893) !== 0)) {
-	            this.state = 101;
+	            this.state = 99;
 	            this.value();
-	            this.state = 106;
+	            this.state = 104;
 	            this._errHandler.sync(this);
 	            _la = this._input.LA(1);
 	        }
@@ -533,11 +562,11 @@ export default class PolicyParser extends antlr4.Parser {
 
 	value_list_lhs() {
 	    let localctx = new Value_list_lhsContext(this, this._ctx, this.state);
-	    this.enterRule(localctx, 16, PolicyParser.RULE_value_list_lhs);
+	    this.enterRule(localctx, 20, PolicyParser.RULE_value_list_lhs);
 	    var _la = 0;
 	    try {
 	        this.enterOuterAlt(localctx, 1);
-	        this.state = 107;
+	        this.state = 105;
 	        _la = this._input.LA(1);
 	        if(!(((((_la - 7)) & ~0x1f) === 0 && ((1 << (_la - 7)) & 1013088099) !== 0) || ((((_la - 42)) & ~0x1f) === 0 && ((1 << (_la - 42)) & 318614873) !== 0))) {
 	        this._errHandler.recoverInline(this);
@@ -564,16 +593,16 @@ export default class PolicyParser extends antlr4.Parser {
 
 	tuple_list_rule() {
 	    let localctx = new Tuple_list_ruleContext(this, this._ctx, this.state);
-	    this.enterRule(localctx, 18, PolicyParser.RULE_tuple_list_rule);
+	    this.enterRule(localctx, 22, PolicyParser.RULE_tuple_list_rule);
 	    try {
 	        this.enterOuterAlt(localctx, 1);
-	        this.state = 109;
+	        this.state = 107;
 	        this.tuple_list_lhs();
+	        this.state = 108;
+	        this.match(PolicyParser.SYM_COLON);
+	        this.state = 109;
+	        this.match(PolicyParser.SYM_COLON);
 	        this.state = 110;
-	        this.match(PolicyParser.SYM_COLON);
-	        this.state = 111;
-	        this.match(PolicyParser.SYM_COLON);
-	        this.state = 112;
 	        this.zero_or_more_tuples(0);
 	    } catch (re) {
 	    	if(re instanceof antlr4.error.RecognitionException) {
@@ -593,10 +622,10 @@ export default class PolicyParser extends antlr4.Parser {
 
 	tuple_list_lhs() {
 	    let localctx = new Tuple_list_lhsContext(this, this._ctx, this.state);
-	    this.enterRule(localctx, 20, PolicyParser.RULE_tuple_list_lhs);
+	    this.enterRule(localctx, 24, PolicyParser.RULE_tuple_list_lhs);
 	    try {
 	        this.enterOuterAlt(localctx, 1);
-	        this.state = 114;
+	        this.state = 112;
 	        this.match(PolicyParser.LABEL_TARGET_RESOURCES);
 	    } catch (re) {
 	    	if(re instanceof antlr4.error.RecognitionException) {
@@ -616,16 +645,16 @@ export default class PolicyParser extends antlr4.Parser {
 
 	flexible_match_rule() {
 	    let localctx = new Flexible_match_ruleContext(this, this._ctx, this.state);
-	    this.enterRule(localctx, 22, PolicyParser.RULE_flexible_match_rule);
+	    this.enterRule(localctx, 26, PolicyParser.RULE_flexible_match_rule);
 	    try {
 	        this.enterOuterAlt(localctx, 1);
-	        this.state = 116;
+	        this.state = 114;
 	        this.flexible_match_lhs();
+	        this.state = 115;
+	        this.match(PolicyParser.SYM_COLON);
+	        this.state = 116;
+	        this.match(PolicyParser.SYM_COLON);
 	        this.state = 117;
-	        this.match(PolicyParser.SYM_COLON);
-	        this.state = 118;
-	        this.match(PolicyParser.SYM_COLON);
-	        this.state = 119;
 	        this.flex_match_key_values();
 	    } catch (re) {
 	    	if(re instanceof antlr4.error.RecognitionException) {
@@ -645,10 +674,10 @@ export default class PolicyParser extends antlr4.Parser {
 
 	flexible_match_lhs() {
 	    let localctx = new Flexible_match_lhsContext(this, this._ctx, this.state);
-	    this.enterRule(localctx, 24, PolicyParser.RULE_flexible_match_lhs);
+	    this.enterRule(localctx, 28, PolicyParser.RULE_flexible_match_lhs);
 	    try {
 	        this.enterOuterAlt(localctx, 1);
-	        this.state = 121;
+	        this.state = 119;
 	        this.match(PolicyParser.LABEL_FLEXIBLE_MATCH_RANGE);
 	    } catch (re) {
 	    	if(re instanceof antlr4.error.RecognitionException) {
@@ -668,19 +697,19 @@ export default class PolicyParser extends antlr4.Parser {
 
 	verbatim_rule() {
 	    let localctx = new Verbatim_ruleContext(this, this._ctx, this.state);
-	    this.enterRule(localctx, 26, PolicyParser.RULE_verbatim_rule);
+	    this.enterRule(localctx, 30, PolicyParser.RULE_verbatim_rule);
 	    var _la = 0;
 	    try {
 	        this.enterOuterAlt(localctx, 1);
-	        this.state = 123;
+	        this.state = 121;
 	        this.verbatim_lhs();
+	        this.state = 122;
+	        this.match(PolicyParser.SYM_COLON);
+	        this.state = 123;
+	        this.match(PolicyParser.SYM_COLON);
 	        this.state = 124;
-	        this.match(PolicyParser.SYM_COLON);
-	        this.state = 125;
-	        this.match(PolicyParser.SYM_COLON);
-	        this.state = 126;
 	        localctx.platform = this.match(PolicyParser.STRING);
-	        this.state = 127;
+	        this.state = 125;
 	        localctx.text = this._input.LT(1);
 	        _la = this._input.LA(1);
 	        if(!(_la===75 || _la===76)) {
@@ -708,10 +737,10 @@ export default class PolicyParser extends antlr4.Parser {
 
 	verbatim_lhs() {
 	    let localctx = new Verbatim_lhsContext(this, this._ctx, this.state);
-	    this.enterRule(localctx, 28, PolicyParser.RULE_verbatim_lhs);
+	    this.enterRule(localctx, 32, PolicyParser.RULE_verbatim_lhs);
 	    try {
 	        this.enterOuterAlt(localctx, 1);
-	        this.state = 129;
+	        this.state = 127;
 	        this.match(PolicyParser.LABEL_VERBATIM);
 	    } catch (re) {
 	    	if(re instanceof antlr4.error.RecognitionException) {
@@ -731,23 +760,23 @@ export default class PolicyParser extends antlr4.Parser {
 
 	vpn_rule() {
 	    let localctx = new Vpn_ruleContext(this, this._ctx, this.state);
-	    this.enterRule(localctx, 30, PolicyParser.RULE_vpn_rule);
+	    this.enterRule(localctx, 34, PolicyParser.RULE_vpn_rule);
 	    var _la = 0;
 	    try {
 	        this.enterOuterAlt(localctx, 1);
-	        this.state = 131;
+	        this.state = 129;
 	        this.vpn_lhs();
+	        this.state = 130;
+	        this.match(PolicyParser.SYM_COLON);
+	        this.state = 131;
+	        this.match(PolicyParser.SYM_COLON);
 	        this.state = 132;
-	        this.match(PolicyParser.SYM_COLON);
-	        this.state = 133;
-	        this.match(PolicyParser.SYM_COLON);
-	        this.state = 134;
 	        localctx.name = this.match(PolicyParser.STRING);
-	        this.state = 136;
+	        this.state = 134;
 	        this._errHandler.sync(this);
 	        _la = this._input.LA(1);
 	        if(_la===83) {
-	            this.state = 135;
+	            this.state = 133;
 	            localctx.pair_policy = this.match(PolicyParser.STRING);
 	        }
 
@@ -769,10 +798,10 @@ export default class PolicyParser extends antlr4.Parser {
 
 	vpn_lhs() {
 	    let localctx = new Vpn_lhsContext(this, this._ctx, this.state);
-	    this.enterRule(localctx, 32, PolicyParser.RULE_vpn_lhs);
+	    this.enterRule(localctx, 36, PolicyParser.RULE_vpn_lhs);
 	    try {
 	        this.enterOuterAlt(localctx, 1);
-	        this.state = 138;
+	        this.state = 136;
 	        this.match(PolicyParser.LABEL_VPN);
 	    } catch (re) {
 	    	if(re instanceof antlr4.error.RecognitionException) {
@@ -797,25 +826,25 @@ export default class PolicyParser extends antlr4.Parser {
 	    const _parentState = this.state;
 	    let localctx = new Zero_or_more_tuplesContext(this, this._ctx, _parentState);
 	    let _prevctx = localctx;
-	    const _startState = 34;
-	    this.enterRecursionRule(localctx, 34, PolicyParser.RULE_zero_or_more_tuples, _p);
+	    const _startState = 38;
+	    this.enterRecursionRule(localctx, 38, PolicyParser.RULE_zero_or_more_tuples, _p);
 	    try {
 	        this.enterOuterAlt(localctx, 1);
-	        this.state = 147;
+	        this.state = 145;
 	        this._errHandler.sync(this);
-	        var la_ = this._interp.adaptivePredict(this._input,7,this._ctx);
+	        var la_ = this._interp.adaptivePredict(this._input,6,this._ctx);
 	        switch(la_) {
 	        case 1:
-	            this.state = 141;
+	            this.state = 139;
 	            this.match(PolicyParser.SYM_LBRACKET);
-	            this.state = 142;
+	            this.state = 140;
 	            this.zero_or_more_tuples(0);
-	            this.state = 143;
+	            this.state = 141;
 	            this.match(PolicyParser.SYM_RBRACKET);
 	            break;
 
 	        case 2:
-	            this.state = 145;
+	            this.state = 143;
 	            this.tuple();
 	            break;
 
@@ -824,48 +853,48 @@ export default class PolicyParser extends antlr4.Parser {
 
 	        }
 	        this._ctx.stop = this._input.LT(-1);
-	        this.state = 156;
+	        this.state = 154;
 	        this._errHandler.sync(this);
-	        var _alt = this._interp.adaptivePredict(this._input,9,this._ctx)
+	        var _alt = this._interp.adaptivePredict(this._input,8,this._ctx)
 	        while(_alt!=2 && _alt!=antlr4.atn.ATN.INVALID_ALT_NUMBER) {
 	            if(_alt===1) {
 	                if(this._parseListeners!==null) {
 	                    this.triggerExitRuleEvent();
 	                }
 	                _prevctx = localctx;
-	                this.state = 154;
+	                this.state = 152;
 	                this._errHandler.sync(this);
-	                var la_ = this._interp.adaptivePredict(this._input,8,this._ctx);
+	                var la_ = this._interp.adaptivePredict(this._input,7,this._ctx);
 	                switch(la_) {
 	                case 1:
 	                    localctx = new Zero_or_more_tuplesContext(this, _parentctx, _parentState);
 	                    this.pushNewRecursionContext(localctx, _startState, PolicyParser.RULE_zero_or_more_tuples);
-	                    this.state = 149;
+	                    this.state = 147;
 	                    if (!( this.precpred(this._ctx, 4))) {
 	                        throw new antlr4.error.FailedPredicateException(this, "this.precpred(this._ctx, 4)");
 	                    }
-	                    this.state = 150;
+	                    this.state = 148;
 	                    this.match(PolicyParser.T__0);
-	                    this.state = 151;
+	                    this.state = 149;
 	                    this.tuple();
 	                    break;
 
 	                case 2:
 	                    localctx = new Zero_or_more_tuplesContext(this, _parentctx, _parentState);
 	                    this.pushNewRecursionContext(localctx, _startState, PolicyParser.RULE_zero_or_more_tuples);
-	                    this.state = 152;
+	                    this.state = 150;
 	                    if (!( this.precpred(this._ctx, 3))) {
 	                        throw new antlr4.error.FailedPredicateException(this, "this.precpred(this._ctx, 3)");
 	                    }
-	                    this.state = 153;
+	                    this.state = 151;
 	                    this.tuple();
 	                    break;
 
 	                } 
 	            }
-	            this.state = 158;
+	            this.state = 156;
 	            this._errHandler.sync(this);
-	            _alt = this._interp.adaptivePredict(this._input,9,this._ctx);
+	            _alt = this._interp.adaptivePredict(this._input,8,this._ctx);
 	        }
 
 	    } catch( error) {
@@ -886,18 +915,18 @@ export default class PolicyParser extends antlr4.Parser {
 
 	tuple() {
 	    let localctx = new TupleContext(this, this._ctx, this.state);
-	    this.enterRule(localctx, 36, PolicyParser.RULE_tuple);
+	    this.enterRule(localctx, 40, PolicyParser.RULE_tuple);
 	    try {
 	        this.enterOuterAlt(localctx, 1);
-	        this.state = 159;
+	        this.state = 157;
 	        this.match(PolicyParser.T__1);
+	        this.state = 158;
+	        this.match(PolicyParser.STRING);
+	        this.state = 159;
+	        this.match(PolicyParser.T__0);
 	        this.state = 160;
 	        this.match(PolicyParser.STRING);
 	        this.state = 161;
-	        this.match(PolicyParser.T__0);
-	        this.state = 162;
-	        this.match(PolicyParser.STRING);
-	        this.state = 163;
 	        this.match(PolicyParser.T__2);
 	    } catch (re) {
 	    	if(re instanceof antlr4.error.RecognitionException) {
@@ -917,17 +946,17 @@ export default class PolicyParser extends antlr4.Parser {
 
 	flex_match_key_values() {
 	    let localctx = new Flex_match_key_valuesContext(this, this._ctx, this.state);
-	    this.enterRule(localctx, 38, PolicyParser.RULE_flex_match_key_values);
+	    this.enterRule(localctx, 42, PolicyParser.RULE_flex_match_key_values);
 	    var _la = 0;
 	    try {
 	        this.enterOuterAlt(localctx, 1);
-	        this.state = 168;
+	        this.state = 166;
 	        this._errHandler.sync(this);
 	        _la = this._input.LA(1);
 	        while(_la===83) {
-	            this.state = 165;
+	            this.state = 163;
 	            this.flex_match_pair();
-	            this.state = 170;
+	            this.state = 168;
 	            this._errHandler.sync(this);
 	            _la = this._input.LA(1);
 	        }
@@ -949,13 +978,13 @@ export default class PolicyParser extends antlr4.Parser {
 
 	flex_match_pair() {
 	    let localctx = new Flex_match_pairContext(this, this._ctx, this.state);
-	    this.enterRule(localctx, 40, PolicyParser.RULE_flex_match_pair);
+	    this.enterRule(localctx, 44, PolicyParser.RULE_flex_match_pair);
 	    var _la = 0;
 	    try {
 	        this.enterOuterAlt(localctx, 1);
-	        this.state = 171;
+	        this.state = 169;
 	        this.match(PolicyParser.STRING);
-	        this.state = 172;
+	        this.state = 170;
 	        _la = this._input.LA(1);
 	        if(!(((((_la - 81)) & ~0x1f) === 0 && ((1 << (_la - 81)) & 7) !== 0))) {
 	        this._errHandler.recoverInline(this);
@@ -982,11 +1011,11 @@ export default class PolicyParser extends antlr4.Parser {
 
 	value() {
 	    let localctx = new ValueContext(this, this._ctx, this.state);
-	    this.enterRule(localctx, 42, PolicyParser.RULE_value);
+	    this.enterRule(localctx, 46, PolicyParser.RULE_value);
 	    var _la = 0;
 	    try {
 	        this.enterOuterAlt(localctx, 1);
-	        this.state = 174;
+	        this.state = 172;
 	        _la = this._input.LA(1);
 	        if(!(((((_la - 74)) & ~0x1f) === 0 && ((1 << (_la - 74)) & 893) !== 0))) {
 	        this._errHandler.recoverInline(this);
@@ -1106,26 +1135,28 @@ PolicyParser.WS = 90;
 
 PolicyParser.RULE_policy = 0;
 PolicyParser.RULE_filter = 1;
-PolicyParser.RULE_header = 2;
-PolicyParser.RULE_term = 3;
-PolicyParser.RULE_policy_rule = 4;
-PolicyParser.RULE_value_rule = 5;
-PolicyParser.RULE_value_lhs = 6;
-PolicyParser.RULE_value_list_rule = 7;
-PolicyParser.RULE_value_list_lhs = 8;
-PolicyParser.RULE_tuple_list_rule = 9;
-PolicyParser.RULE_tuple_list_lhs = 10;
-PolicyParser.RULE_flexible_match_rule = 11;
-PolicyParser.RULE_flexible_match_lhs = 12;
-PolicyParser.RULE_verbatim_rule = 13;
-PolicyParser.RULE_verbatim_lhs = 14;
-PolicyParser.RULE_vpn_rule = 15;
-PolicyParser.RULE_vpn_lhs = 16;
-PolicyParser.RULE_zero_or_more_tuples = 17;
-PolicyParser.RULE_tuple = 18;
-PolicyParser.RULE_flex_match_key_values = 19;
-PolicyParser.RULE_flex_match_pair = 20;
-PolicyParser.RULE_value = 21;
+PolicyParser.RULE_term_list = 2;
+PolicyParser.RULE_header = 3;
+PolicyParser.RULE_term = 4;
+PolicyParser.RULE_rule_list = 5;
+PolicyParser.RULE_policy_rule = 6;
+PolicyParser.RULE_value_rule = 7;
+PolicyParser.RULE_value_lhs = 8;
+PolicyParser.RULE_value_list_rule = 9;
+PolicyParser.RULE_value_list_lhs = 10;
+PolicyParser.RULE_tuple_list_rule = 11;
+PolicyParser.RULE_tuple_list_lhs = 12;
+PolicyParser.RULE_flexible_match_rule = 13;
+PolicyParser.RULE_flexible_match_lhs = 14;
+PolicyParser.RULE_verbatim_rule = 15;
+PolicyParser.RULE_verbatim_lhs = 16;
+PolicyParser.RULE_vpn_rule = 17;
+PolicyParser.RULE_vpn_lhs = 18;
+PolicyParser.RULE_zero_or_more_tuples = 19;
+PolicyParser.RULE_tuple = 20;
+PolicyParser.RULE_flex_match_key_values = 21;
+PolicyParser.RULE_flex_match_pair = 22;
+PolicyParser.RULE_value = 23;
 
 class PolicyContext extends antlr4.ParserRuleContext {
 
@@ -1187,6 +1218,37 @@ class FilterContext extends antlr4.ParserRuleContext {
 	    return this.getTypedRuleContext(HeaderContext,0);
 	};
 
+	term_list() {
+	    return this.getTypedRuleContext(Term_listContext,0);
+	};
+
+	accept(visitor) {
+	    if ( visitor instanceof PolicyVisitor ) {
+	        return visitor.visitFilter(this);
+	    } else {
+	        return visitor.visitChildren(this);
+	    }
+	}
+
+
+}
+
+
+
+class Term_listContext extends antlr4.ParserRuleContext {
+
+    constructor(parser, parent, invokingState) {
+        if(parent===undefined) {
+            parent = null;
+        }
+        if(invokingState===undefined || invokingState===null) {
+            invokingState = -1;
+        }
+        super(parent, invokingState);
+        this.parser = parser;
+        this.ruleIndex = PolicyParser.RULE_term_list;
+    }
+
 	term = function(i) {
 	    if(i===undefined) {
 	        i = null;
@@ -1200,7 +1262,7 @@ class FilterContext extends antlr4.ParserRuleContext {
 
 	accept(visitor) {
 	    if ( visitor instanceof PolicyVisitor ) {
-	        return visitor.visitFilter(this);
+	        return visitor.visitTerm_list(this);
 	    } else {
 	        return visitor.visitChildren(this);
 	    }
@@ -1229,35 +1291,16 @@ class HeaderContext extends antlr4.ParserRuleContext {
 	    return this.getToken(PolicyParser.KW_HEADER, 0);
 	};
 
-	SYM_COLON = function(i) {
-		if(i===undefined) {
-			i = null;
-		}
-	    if(i===null) {
-	        return this.getTokens(PolicyParser.SYM_COLON);
-	    } else {
-	        return this.getToken(PolicyParser.SYM_COLON, i);
-	    }
-	};
-
-
 	SYM_LBRACE() {
 	    return this.getToken(PolicyParser.SYM_LBRACE, 0);
 	};
 
-	SYM_RBRACE() {
-	    return this.getToken(PolicyParser.SYM_RBRACE, 0);
+	rule_list() {
+	    return this.getTypedRuleContext(Rule_listContext,0);
 	};
 
-	policy_rule = function(i) {
-	    if(i===undefined) {
-	        i = null;
-	    }
-	    if(i===null) {
-	        return this.getTypedRuleContexts(Policy_ruleContext);
-	    } else {
-	        return this.getTypedRuleContext(Policy_ruleContext,i);
-	    }
+	SYM_RBRACE() {
+	    return this.getToken(PolicyParser.SYM_RBRACE, 0);
 	};
 
 	accept(visitor) {
@@ -1292,20 +1335,12 @@ class TermContext extends antlr4.ParserRuleContext {
 	    return this.getToken(PolicyParser.KW_TERM, 0);
 	};
 
-	SYM_COLON = function(i) {
-		if(i===undefined) {
-			i = null;
-		}
-	    if(i===null) {
-	        return this.getTokens(PolicyParser.SYM_COLON);
-	    } else {
-	        return this.getToken(PolicyParser.SYM_COLON, i);
-	    }
-	};
-
-
 	SYM_LBRACE() {
 	    return this.getToken(PolicyParser.SYM_LBRACE, 0);
+	};
+
+	rule_list() {
+	    return this.getTypedRuleContext(Rule_listContext,0);
 	};
 
 	SYM_RBRACE() {
@@ -1315,6 +1350,33 @@ class TermContext extends antlr4.ParserRuleContext {
 	STRING() {
 	    return this.getToken(PolicyParser.STRING, 0);
 	};
+
+	accept(visitor) {
+	    if ( visitor instanceof PolicyVisitor ) {
+	        return visitor.visitTerm(this);
+	    } else {
+	        return visitor.visitChildren(this);
+	    }
+	}
+
+
+}
+
+
+
+class Rule_listContext extends antlr4.ParserRuleContext {
+
+    constructor(parser, parent, invokingState) {
+        if(parent===undefined) {
+            parent = null;
+        }
+        if(invokingState===undefined || invokingState===null) {
+            invokingState = -1;
+        }
+        super(parent, invokingState);
+        this.parser = parser;
+        this.ruleIndex = PolicyParser.RULE_rule_list;
+    }
 
 	policy_rule = function(i) {
 	    if(i===undefined) {
@@ -1329,7 +1391,7 @@ class TermContext extends antlr4.ParserRuleContext {
 
 	accept(visitor) {
 	    if ( visitor instanceof PolicyVisitor ) {
-	        return visitor.visitTerm(this);
+	        return visitor.visitRule_list(this);
 	    } else {
 	        return visitor.visitChildren(this);
 	    }
@@ -2355,8 +2417,10 @@ class ValueContext extends antlr4.ParserRuleContext {
 
 PolicyParser.PolicyContext = PolicyContext; 
 PolicyParser.FilterContext = FilterContext; 
+PolicyParser.Term_listContext = Term_listContext; 
 PolicyParser.HeaderContext = HeaderContext; 
 PolicyParser.TermContext = TermContext; 
+PolicyParser.Rule_listContext = Rule_listContext; 
 PolicyParser.Policy_ruleContext = Policy_ruleContext; 
 PolicyParser.Value_ruleContext = Value_ruleContext; 
 PolicyParser.Value_lhsContext = Value_lhsContext; 

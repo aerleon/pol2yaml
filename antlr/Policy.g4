@@ -5,15 +5,23 @@ policy
     ;
 
 filter
-    : header term+
+    : header term_list
+    ;
+
+term_list
+    : term+
     ;
 
 header
-    : KW_HEADER ':' ':' '{' policy_rule* '}'
+    : KW_HEADER '{' rule_list '}'
     ;
 
 term
-    : KW_TERM term_name=STRING ':' ':' '{' policy_rule* '}'
+    : KW_TERM term_name=STRING '{' rule_list '}'
+    ;
+
+rule_list
+    : policy_rule*
     ;
 
 policy_rule

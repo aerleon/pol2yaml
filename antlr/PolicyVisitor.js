@@ -18,6 +18,12 @@ export default class PolicyVisitor extends antlr4.tree.ParseTreeVisitor {
 	}
 
 
+	// Visit a parse tree produced by PolicyParser#term_list.
+	visitTerm_list(ctx) {
+	  return this.visitChildren(ctx);
+	}
+
+
 	// Visit a parse tree produced by PolicyParser#header.
 	visitHeader(ctx) {
 	  return this.visitChildren(ctx);
@@ -26,6 +32,12 @@ export default class PolicyVisitor extends antlr4.tree.ParseTreeVisitor {
 
 	// Visit a parse tree produced by PolicyParser#term.
 	visitTerm(ctx) {
+	  return this.visitChildren(ctx);
+	}
+
+
+	// Visit a parse tree produced by PolicyParser#rule_list.
+	visitRule_list(ctx) {
 	  return this.visitChildren(ctx);
 	}
 
