@@ -4,6 +4,7 @@ import * as fs from 'node:fs';
 import { CharStream, CommonTokenStream, Parser } from 'antlr4';
 import PolicyLexer from './antlr/PolicyLexer.js';
 import PolicyParser from './antlr/PolicyParser.js';
+import { stringify } from 'yaml';
 
 import PolicyParseTreeVisitor from './visitor.js';
 
@@ -62,14 +63,13 @@ class PolicyFile {
 
         ({ text, placeholder_count: this.placeholder_count } = PolicyFile_preprocess_include(text));
         this.contents = PolicyFile_parse(this, text);
-        console.log(this.contents);
-        debugger;
     }
 
     toYAML() {
         // convert this.contents to YAML
         // TODO temp
-        return JSON.stringify(this.contents);
+        // return JSON.stringify(this.contents, null, 2);
+        return stringify(this.contents);
     }
 }
 
@@ -84,7 +84,7 @@ function demo(argv) {
     const filename = argv[2] ?? DEFAULT_INPUT_FILENAME;
     const text = fs.readFileSync(filename)?.toString();
     const pf = new PolicyFile(filename, text);
-    // console.log(pf.toYAML());
+    console.log(pf.toYAML());
     // }
 }
 

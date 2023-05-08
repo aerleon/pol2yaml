@@ -25,19 +25,27 @@ function collate(rules) {
     const result = {};
     for (const rule of rules) {
         const rule_key = rule.type[1];
+        const collation = rule.type[2]?.join_type ?? JoinType.default;
         let platform = null;
 
         // preprocess map-like rules into mappings here (TARGET, VERBATIM)
+        // preprocess string-like rules into strings here (COMMENT, VERBATIM)
         if (rule.type[2]?.map) {
             platform = rule.data[0];
-            rule.data = { [platform]: rule.data.slice(1) };
+            let rhs = rule.data.slice(1);
+            if (collation === JoinType.PLATFORM_STRING_CONCAT) {
+                rhs = rhs[0];
+            }
+            rule.data = { [platform]: rhs };
+            
+        } else if (collation === JoinType.STRING_CONCAT) {
+            rule.data = rule.data[0];
         }
 
         // assemble result
         if (Object.hasOwn(result, rule_key)) {
 
             // rule type has already been encountered
-            const collation = rule.type[2]?.join_type ?? JoinType.default;
             const result_rule = result[rule_key];
 
             switch (collation) {
@@ -48,7 +56,7 @@ function collate(rules) {
 
                 case JoinType.STRING_CONCAT:
                     // (COMMENT)
-                    result_rule.data[0] += `\n${rule.data[0]}`;
+                    result_rule.data += `\n${rule.data}`;
                     break;
 
                 case JoinType.LAST_WINS:
@@ -67,7 +75,7 @@ function collate(rules) {
                 case JoinType.PLATFORM_STRING_CONCAT:
                     // (VERBATIM)
                     if (Object.hasOwn(result_rule.data, platform)) {
-                        result_rule.data[platform][0] += `\n${rule.data[platform][0]}`;
+                        result_rule.data[platform] += `\n${rule.data[platform]}`;
                     } else {
                         result_rule.data[platform] = rule.data[platform];
                     }
@@ -83,9 +91,18 @@ function collate(rules) {
 }
 
 // Model
+export class Filter {
+    header = null
+    terms = null
+}
+
 export class Header {
     block_comment = null
     rules = {}
+
+    toJSON() {
+        return this.rules;
+    }
 }
 
 
@@ -93,12 +110,24 @@ export class Term {
     block_comment = null
     name = null
     rules = {}
+
+    toJSON() {
+        const { name } = this;
+        return {
+            name,
+            ...this.rules
+        };
+    }
 }
 
 
 export class Rule {
     type = null
     data = null
+
+    toJSON() {
+        return this.data;
+    }
 }
 
 // Notes on an enum-like pattern:
@@ -232,7 +261,11 @@ export default class PolicyParseTreeVisitor extends PolicyVisitor {
     }
 
     visitFilter(ctx) {
-        return this.visitChildren(ctx);
+        const [header, terms] = this.visitChildren(ctx);
+        const filter = new Filter();
+        filter.header = header;
+        filter.terms = terms;
+        return filter;
     }
 
     visitHeader(ctx) {
@@ -377,10 +410,10 @@ export default class PolicyParseTreeVisitor extends PolicyVisitor {
             case PolicyParser.ESCAPED_STRING:
                 // unescape
                 text = text.replaceAll("\\\"", "\"");
-                // fallthru
+            // fallthru
             case PolicyParser.DOUBLE_QUOTED_STRING:
                 // strip surrouding quotes
-                text = text.slice(1,-1);
+                text = text.slice(1, -1);
                 break;
         }
         return text;
