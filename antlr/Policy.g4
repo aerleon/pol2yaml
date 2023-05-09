@@ -1,8 +1,10 @@
 grammar Policy;
 
 policy
-    : filter* EOF
+    : filter* eof
     ;
+
+eof : EOF ;
 
 filter
     : header term_list
