@@ -1,7 +1,7 @@
 "use strict"
 
 import * as fs from 'node:fs';
-import { CharStream, CommonTokenStream, Parser } from 'antlr4';
+import { CharStream, CommonTokenStream } from 'antlr4';
 import PolicyLexer from './antlr/PolicyLexer.js';
 import PolicyParser from './antlr/PolicyParser.js';
 import { Document } from 'yaml';
@@ -23,10 +23,6 @@ import { IncludeTerm } from './visitor.js';
 //   - check for interior comments and collect the charstream if present
 //   produce YAML
 
-// Antlr4 Util
-class ArrayWithContains extends Array {
-}
-ArrayWithContains.prototype.contains = Array.prototype.includes;
 
 // Private methods
 function PolicyFile_preprocess_includes(text) {
@@ -111,100 +107,16 @@ class PolicyFile {
 
 
 
-// main
 // const DEFAULT_INPUT_FILENAME = 'policies/includes/untrusted-networks-blocking.inc';
-const DEFAULT_INPUT_FILENAME = 'policies/pol/sample_msmpc.pol';
+// const DEFAULT_INPUT_FILENAME = 'policies/pol/sample_msmpc.pol';
+const DEFAULT_INPUT_FILENAME = 'policies/pol/sample_multitarget.pol';
 // const DEFAULT_INPUT_FILENAME = './policies/pol/sample_k8s.pol';
 function demo(argv) {
-    // glob
-    // const glob = [];
-    // for (const filename of glob) {
     const filename = argv[2] ?? DEFAULT_INPUT_FILENAME;
+    const is_include = /.inc$/.test(filename);
     const text = fs.readFileSync(filename)?.toString();
-    const pf = new PolicyFile(filename, text, false);
+    const pf = new PolicyFile(filename, text, is_include);
     console.log(pf.toYAML());
-    // }
-}
-
-// old POC reference code (delete)
-function visitorParse(input) {
-    const chars = new CharStream(input); // replace this with a FileStream as required
-    const lexer = new PolicyLexer(chars);
-    const tokens = new CommonTokenStream(lexer);
-    const parser = new PolicyParser(tokens);
-    const tree = parser.json();
-    const text = tokens.getText(tree);
-    const text2 = chars.getText(tree.start.start, tree.stop.stop);
-
-    class ArrayWithContains extends Array {
-    }
-    ArrayWithContains.prototype.contains = Array.prototype.includes;
-
-    class MyVisitor extends PolicyVisitor {
-        visitValue(ctx) {
-            return this.visitChildren(ctx)[0];
-        }
-
-        visitTerminal(ctx) {
-            return ctx.getText()
-        }
-
-        // Visit a parse tree produced by JSONParser#json.
-        visitJson(ctx) {
-            return this.visitChildren(ctx)[0];
-        }
-
-        // Visit a parse tree produced by JSONParser#obj.
-        visitObj(ctx) {
-            const result = {};
-
-            // const tgt = tokens.getText(ctx);
-            // const token_range = tokens.tokens.slice(ctx.start.tokenIndex, ctx.stop.tokenIndex);
-            // for (const token of token_range) {
-            //     console.log(token);
-            // }
-            const awc = new ArrayWithContains();
-            awc.push(MyGrammarParser.LINE_COMMENT);
-            const comment_tokens = tokens.getTokens(ctx.start.tokenIndex, ctx.stop.tokenIndex, awc);
-            result.has_comments = !!comment_tokens.length;
-            result.original_text = chars.getText(ctx.start.start, ctx.stop.stop)
-
-            const childs = this.visitChildren(ctx).slice(1, -1);
-            for (const child of childs) {
-                if (child == ',') {
-                    continue
-                }
-                result[child[0]] = child[1];
-            }
-            return result
-        }
-
-
-        // Visit a parse tree produced by JSONParser#pair.
-        visitPair(ctx) {
-            const childs = this.visitChildren(ctx);
-            return [childs[0], childs[2]];
-        }
-
-
-        // Visit a parse tree produced by JSONParser#arr.
-        visitArr(ctx) {
-            const childs = this.visitChildren(ctx).slice(1, -1);
-            const result = [];
-            for (const child of childs) {
-                if (child == ',') {
-                    continue
-                }
-                result.push(child);
-            }
-            return result
-        }
-    }
-
-    const visitor = new MyVisitor();
-
-    const output = visitor.visit(tree);
-    debugger;
 }
 
 demo(process.argv);
