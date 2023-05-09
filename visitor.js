@@ -148,6 +148,7 @@ export class Header {
 
 export class Term {
     before_comment = null
+    after_comment = null
     name = null
     rules = {}
 
@@ -158,6 +159,10 @@ export class Term {
             node.commentBefore = this.before_comment;
         }
         
+        if (this.after_comment ?? false) {
+            node.comment = this.after_comment;
+        }
+
         return node;
     }
     
@@ -167,6 +172,13 @@ export class Term {
             name,
             ...this.rules
         };
+    }
+}
+
+export class IncludeTerm extends Term {
+
+    toJSON() {
+        return this.rules;
     }
 }
 
@@ -313,7 +325,7 @@ function getTokensBetweenChildren(ctx, types) {
         );
 
         if (comment_tokens.length) {
-            return comment_tokens.map(token => token.text).join('');
+            return comment_tokens.map(token => token.text.slice(1)).join('');
         }
     });
 }
@@ -326,7 +338,7 @@ function getTokensOutsideChildren(ctx, types) {
     const start_tokens = tokens.getTokens(0, ctx.children[0].start.tokenIndex, types);
     let start_text;
     if (start_tokens.length) {
-        start_text = start_tokens.map(token => token.text).join('');
+        start_text = start_tokens.map(token => token.text.slice(1)).join('');
     }
     comments.unshift(start_text);
     return comments;
@@ -336,31 +348,43 @@ function getTokensOutsideChildren(ctx, types) {
 // 1. in a term list: between terms
 // 2. in a filter: between the header and term list
 // 3. at the top level: between filter or at the start or at the end
+function visitTopLevel(ctx) {
+    if (!(this instanceof PolicyParseTreeVisitor)) {
+        throw TypeError("visitTopLevel expects 'this' to be an instance of PolicyParseTreeVisitor");
+    }
+
+    const child_productions = this.visitChildren(ctx).slice(0, -1); // strip EOF
+
+    // scan for comment tokens in the whole file, excluding "in-children" tokens
+    // look for comment tokens in the pre-, inter-, and post- children token ranges
+    // attach them to the child filters (before_comment)
+    // any trailing comment becomes an after_comment on the final filter
+    const comments = getTokensOutsideChildren(ctx, line_comment_filter);
+    const before_comments = comments.slice(0, -1);
+    const last_comment = comments.slice(-1)[0];
+
+    before_comments.forEach((comments, i) => {
+        if (comments ?? false) {
+            // before_comment may already exist (or not)
+            child_productions[i].before_comment = [comments, child_productions[i].before_comment].join('');
+        }
+    });
+
+    if (last_comment ?? false) {
+        const last_production = child_productions.slice(-1)[0];
+        last_production.after_comment = [last_comment, last_production.after_comment].join('');
+    }
+
+    return child_productions;
+}
+
 export default class PolicyParseTreeVisitor extends PolicyVisitor {
     visitPolicy(ctx) {
-        const child_productions = this.visitChildren(ctx).slice(0, -1); // strip EOF
+        return visitTopLevel.call(this, ctx);
+    }
 
-        // scan for comment tokens in the whole file, excluding "in-children" tokens
-        // look for comment tokens in the pre-, inter-, and post- children token ranges
-        // attach them to the child filters (before_comment)
-        // any trailing comment becomes an after_comment on the final filter
-        const comments = getTokensOutsideChildren(ctx, line_comment_filter);
-        const before_comments = comments.slice(0, -1);
-        const last_comment = comments.slice(-1);
-
-        before_comments.forEach((comments, i) => {
-            if (comments ?? false) {
-                // before_comment may already exist (or not)
-                child_productions[i].before_comment = [comments, child_productions[i].before_comment].join('');
-            }
-        });
-
-        if (last_comment ?? false) {
-            const last_production = child_productions.slice(-1);
-            last_production.after_comment = [last_comment, last_production.after_comment].join('');
-        }
-
-        return child_productions;
+    visitTerm_list_only(ctx) {
+        return visitTopLevel.call(this, ctx);
     }
 
     visitFilter(ctx) {

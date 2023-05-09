@@ -4,9 +4,10 @@ import * as fs from 'node:fs';
 import { CharStream, CommonTokenStream, Parser } from 'antlr4';
 import PolicyLexer from './antlr/PolicyLexer.js';
 import PolicyParser from './antlr/PolicyParser.js';
-import { stringify, Document } from 'yaml';
+import { Document } from 'yaml';
 
 import PolicyParseTreeVisitor from './visitor.js';
+import { IncludeTerm } from './visitor.js';
 
 // locate input files (glob **/*.pol)
 // for each input file
@@ -50,7 +51,10 @@ function PolicyFile_replace_includes(policy_file) {
         for (const i in term_list) {
             const term = term_list[i];
             if (term.name?.startsWith("PLACEHOLDER-INCLUDE-")) {
-                term_list[i] = { "include": term.rules.comment };
+                const new_term = new IncludeTerm();
+                new_term.before_comment = term.before_comment;
+                new_term.rules.include = term.rules.comment;
+                term_list[i] = new_term;
             }
         }
     }
@@ -68,7 +72,7 @@ function PolicyFile_parse(policy_file, text) {
     const lexer = new PolicyLexer(new CharStream(text));
     const parser = new PolicyParser(new CommonTokenStream(lexer));
 
-    const tree = policy_file.is_include ? parser.term_list() : parser.policy();
+    const tree = policy_file.is_include ? parser.term_list_only() : parser.policy();
 
     const visitor = new PolicyParseTreeVisitor();
     return visitor.visit(tree);
@@ -89,17 +93,18 @@ class PolicyFile {
     }
 
     toYAML() {
-        // const doc1 = new Document(this.contents);
         const doc = new Document();
+
         if (this.is_include) {
             
             const term_nodes = this.contents?.map(term => term.toYAMLNode(doc)) ?? null;
             doc.set('terms', term_nodes);
         } else {
+
             const filter_nodes = this.contents?.map(filter => filter.toYAMLNode(doc)) ?? null;
             doc.set('filters', filter_nodes);
         }
-        // return stringify(this.contents);
+
         return String(doc);
     }
 }
@@ -108,8 +113,8 @@ class PolicyFile {
 
 // main
 // const DEFAULT_INPUT_FILENAME = 'policies/includes/untrusted-networks-blocking.inc';
-// const DEFAULT_INPUT_FILENAME = 'policies/pol/sample_msmpc.pol'; 
-const DEFAULT_INPUT_FILENAME = './policies/pol/sample_k8s.pol';
+const DEFAULT_INPUT_FILENAME = 'policies/pol/sample_msmpc.pol';
+// const DEFAULT_INPUT_FILENAME = './policies/pol/sample_k8s.pol';
 function demo(argv) {
     // glob
     // const glob = [];
