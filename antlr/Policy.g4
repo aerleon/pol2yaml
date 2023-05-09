@@ -321,7 +321,7 @@ SYM_RPAREN : ')';
 
 // TOKENS > Whitespace and Comments
 LINE_COMMENT
-    : '#' .*? [\n\r] -> channel(HIDDEN)
+    : '#' .*? ([\n\r]|EOF) -> channel(HIDDEN)
     ;
 
 WS
