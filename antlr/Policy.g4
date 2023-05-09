@@ -10,6 +10,10 @@ filter
     : header term_list
     ;
 
+term_list_only
+    : term+ eof
+    ;
+
 term_list
     : term+
     ;
@@ -310,6 +314,9 @@ SYM_LBRACE : '{';
 SYM_RBRACE : '}';
 SYM_LBRACKET : '[';
 SYM_RBRACKET : ']';
+SYM_COMMA : ',';
+SYM_LPAREN : '(';
+SYM_RPAREN : ')';
 
 
 // TOKENS > Whitespace and Comments
