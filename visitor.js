@@ -15,12 +15,17 @@ function preserve(ctx) {
     const tokens = ctx.parser.getTokenStream();
 
     const comment_tokens = tokens.getTokens(ctx.start.tokenIndex, ctx.stop.tokenIndex + 1, line_comment_filter);
-    if (!!comment_tokens.length) {
+    if (comment_tokens.length) {
         const chars = tokens.tokenSource.inputStream;
-        return chars.getText(ctx.start.start, ctx.stop.stop);
+        return ` [pol2yaml] The following term contained comments. Original text:
+${chars.getText(ctx.start.start, ctx.stop.stop)}`;
     }
 }
 
+// collate rules within a Term or Header
+// map-like and string-like rules are converted into a map or string representation here
+// collation rules like "last wins" are applied here
+// TODO will generate warnings if any shadowed rules are discarded
 function collate(rules) {
     const result = {};
     for (const rule of rules) {
@@ -95,13 +100,45 @@ function collate(rules) {
 
 // Model
 export class Filter {
+    before_comment = null
+    after_comment = null
     header = null
     terms = null
+
+    toYAMLNode(doc) {
+        const header_node = this.header?.toYAMLNode(doc) ?? null;
+        const term_nodes = this.terms?.map(term => term.toYAMLNode(doc)) ?? null;
+        const filter_node = doc.createNode({header: header_node, terms: term_nodes});
+
+        if (this.before_comment ?? false) {
+            filter_node.commentBefore = this.before_comment;
+        }
+        if (this.after_comment ?? false) {
+            filter_node.comment = this.after_comment;
+        }
+
+        return filter_node;
+    }
+
+    toJSON() {
+        const {header, terms} = this;
+        return {header, terms};
+    }
 }
 
 export class Header {
-    block_comment = null
+    before_comment = null
     rules = {}
+
+    toYAMLNode(doc) {
+        const node = doc.createNode(this);
+
+        if (this.before_comment ?? false) {
+            node.commentBefore = this.before_comment;
+        }
+        
+        return node;
+    }
 
     toJSON() {
         return this.rules;
@@ -110,10 +147,20 @@ export class Header {
 
 
 export class Term {
-    block_comment = null
+    before_comment = null
     name = null
     rules = {}
 
+    toYAMLNode(doc) {
+        const node = doc.createNode(this);
+
+        if (this.before_comment ?? false) {
+            node.commentBefore = this.before_comment;
+        }
+        
+        return node;
+    }
+    
     toJSON() {
         const { name } = this;
         return {
@@ -254,13 +301,66 @@ export class RuleType extends Enum {
 }
 
 
-// class NoCollapse extends Enum {
-//     static NO_COLLAPSE = new NoCollapse("NO_COLLAPSE")
-// }
+function getTokensBetweenChildren(ctx, types) {
+    const tokens = ctx.parser.getTokenStream();
 
+    // map each inter-child gap to a comment string (or undefined)
+    return ctx.children.slice(1).map((_, i) => {
+        const comment_tokens = tokens.getTokens(
+            ctx.children[i].stop.tokenIndex + 1,
+            ctx.children[i+1].start.tokenIndex,
+            types
+        );
+
+        if (comment_tokens.length) {
+            return comment_tokens.map(token => token.text).join('');
+        }
+    });
+}
+
+// similar to getTokensBetweenChildren but we include range 0-start
+// note that EOF is technically a child production so end-EOF is implied
+function getTokensOutsideChildren(ctx, types) {
+    const comments = getTokensBetweenChildren(ctx, types);
+    const tokens = ctx.parser.getTokenStream();
+    const start_tokens = tokens.getTokens(0, ctx.children[0].start.tokenIndex, types);
+    let start_text;
+    if (start_tokens.length) {
+        start_text = start_tokens.map(token => token.text).join('');
+    }
+    comments.unshift(start_text);
+    return comments;
+}
+
+// recognized block comments appear at three levels:
+// 1. in a term list: between terms
+// 2. in a filter: between the header and term list
+// 3. at the top level: between filter or at the start or at the end
 export default class PolicyParseTreeVisitor extends PolicyVisitor {
     visitPolicy(ctx) {
-        return this.visitChildren(ctx).slice(0, -1); // strip EOF
+        const child_productions = this.visitChildren(ctx).slice(0, -1); // strip EOF
+
+        // scan for comment tokens in the whole file, excluding "in-children" tokens
+        // look for comment tokens in the pre-, inter-, and post- children token ranges
+        // attach them to the child filters (before_comment)
+        // any trailing comment becomes an after_comment on the final filter
+        const comments = getTokensOutsideChildren(ctx, line_comment_filter);
+        const before_comments = comments.slice(0, -1);
+        const last_comment = comments.slice(-1);
+
+        before_comments.forEach((comments, i) => {
+            if (comments ?? false) {
+                // before_comment may already exist (or not)
+                child_productions[i].before_comment = [comments, child_productions[i].before_comment].join('');
+            }
+        });
+
+        if (last_comment ?? false) {
+            const last_production = child_productions.slice(-1);
+            last_production.after_comment = [last_comment, last_production.after_comment].join('');
+        }
+
+        return child_productions;
     }
 
     visitFilter(ctx) {
@@ -268,6 +368,15 @@ export default class PolicyParseTreeVisitor extends PolicyVisitor {
         const filter = new Filter();
         filter.header = header;
         filter.terms = terms;
+        
+        // scan for comment tokens in the inter-children token range
+        // attach any to the first term (before_comment)
+        const [comments] = getTokensBetweenChildren(ctx, line_comment_filter);
+        if (comments ?? false) {
+            // before_comment may already exist (or not)
+            filter.terms[0].before_comment = [comments, filter.terms[0].before_comment].join('');
+        }
+
         return filter;
     }
 
@@ -275,20 +384,31 @@ export default class PolicyParseTreeVisitor extends PolicyVisitor {
         const preserve_text = preserve(ctx);
         const child_productions = this.visitChildren(ctx);
         const header = new Header();
-        header.block_comment = preserve_text ?? null;
+        header.before_comment = preserve_text ?? null;
         header.rules = child_productions[2];
         return header;
     }
 
     visitTerm_list(ctx) {
-        return this.visitChildren(ctx);
+        const child_productions = this.visitChildren(ctx);
+        
+        // scan for comment tokens in the inter-children token ranges
+        // attach any to the following child term (before_comment)
+        getTokensBetweenChildren(ctx, line_comment_filter).forEach((comments, i) => {
+            if (comments ?? false) {
+            // before_comment may already exist (or not)
+                child_productions[i+1].before_comment = [comments, child_productions[i+1].before_comment].join('');
+            }
+        });
+
+        return child_productions;
     }
 
     visitTerm(ctx) {
         const preserve_text = preserve(ctx);
         const child_productions = this.visitChildren(ctx);
         const term = new Term();
-        term.block_comment = preserve_text ?? null;
+        term.before_comment = preserve_text ?? null;
         term.name = child_productions[1]; // TODO use term_name
         term.rules = child_productions[3];
         return term;

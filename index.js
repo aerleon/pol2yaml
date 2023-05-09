@@ -4,7 +4,7 @@ import * as fs from 'node:fs';
 import { CharStream, CommonTokenStream, Parser } from 'antlr4';
 import PolicyLexer from './antlr/PolicyLexer.js';
 import PolicyParser from './antlr/PolicyParser.js';
-import { stringify } from 'yaml';
+import { stringify, Document } from 'yaml';
 
 import PolicyParseTreeVisitor from './visitor.js';
 
@@ -65,20 +65,15 @@ function PolicyFile_replace_includes(policy_file) {
 }
 
 function PolicyFile_parse(policy_file, text) {
-    const chars = new CharStream(text); // replace this with a FileStream as required
-    const lexer = new PolicyLexer(chars);
-    const tokens = new CommonTokenStream(lexer);
-    const parser = new PolicyParser(tokens);
-    // TODO if policyfile_obj.is_include, try to parse using parser.rule_list();
-    // We can someday fall back to parser.header(), parser.term(), parser.filter(), but
-    // support is needed on the Aerleon side.
+    const lexer = new PolicyLexer(new CharStream(text));
+    const parser = new PolicyParser(new CommonTokenStream(lexer));
+
     const tree = policy_file.is_include ? parser.term_list() : parser.policy();
-    // console.log(tokens.tokens.map(tk => `${PolicyParser.symbolicNames[tk.type]}, ${chars.getText(tk.start, tk.stop)}`));
+
     const visitor = new PolicyParseTreeVisitor();
     return visitor.visit(tree);
 }
 
-// policyfile.js (Again)
 class PolicyFile {
     filename = null
     is_include = false
@@ -94,23 +89,34 @@ class PolicyFile {
     }
 
     toYAML() {
-        return stringify(this.contents);
+        // const doc1 = new Document(this.contents);
+        const doc = new Document();
+        if (this.is_include) {
+            
+            const term_nodes = this.contents?.map(term => term.toYAMLNode(doc)) ?? null;
+            doc.set('terms', term_nodes);
+        } else {
+            const filter_nodes = this.contents?.map(filter => filter.toYAMLNode(doc)) ?? null;
+            doc.set('filters', filter_nodes);
+        }
+        // return stringify(this.contents);
+        return String(doc);
     }
 }
 
 
 
 // main
-const DEFAULT_INPUT_FILENAME = 'policies/includes/untrusted-networks-blocking.inc';
+// const DEFAULT_INPUT_FILENAME = 'policies/includes/untrusted-networks-blocking.inc';
 // const DEFAULT_INPUT_FILENAME = 'policies/pol/sample_msmpc.pol'; 
-// const DEFAULT_INPUT_FILENAME = './policies/pol/sample_k8s.pol';
+const DEFAULT_INPUT_FILENAME = './policies/pol/sample_k8s.pol';
 function demo(argv) {
     // glob
     // const glob = [];
     // for (const filename of glob) {
     const filename = argv[2] ?? DEFAULT_INPUT_FILENAME;
     const text = fs.readFileSync(filename)?.toString();
-    const pf = new PolicyFile(filename, text, true);
+    const pf = new PolicyFile(filename, text, false);
     console.log(pf.toYAML());
     // }
 }
