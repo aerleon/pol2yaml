@@ -60,6 +60,8 @@ function collate(rules) {
                     break;
 
                 case JoinType.LAST_WINS:
+                    // overwrite
+                    // TODO warn user
                     result_rule.data = rule.data;
                     break;
 
@@ -67,6 +69,7 @@ function collate(rules) {
                     // (TARGET)
                     if (Object.hasOwn(result_rule.data, platform)) {
                         // discard rule
+                        // TODO warn user
                     } else {
                         result_rule.data[platform] = rule.data[platform];
                     }

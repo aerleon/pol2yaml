@@ -28,15 +28,43 @@ class ArrayWithContains extends Array {
 ArrayWithContains.prototype.contains = Array.prototype.includes;
 
 // Private methods
-function PolicyFile_preprocess_include(file) {
-    return { text: file, placeholder_count: 0 };
+function PolicyFile_preprocess_includes(text) {
+    let count = 100;
+
+    // mimics python: file.splitlines() -> line.split() -> words[0] == "#include", words[1].strip('\'"')
+    text = text.replaceAll(
+        /^[\r\n\t\f\v ]*#include[\r\n\t\f\v ]+["']*(.*?)["']*(?:[\r\n\t\f\v ]+|$)/gm,
+        (_, include_file) => `
+term PLACEHOLDER-INCLUDE-${++count} {
+    comment:: "${include_file}"
 }
 
-function PolicyFile_preprocess_incfile(file) {
+`);
 
+    return text;
 }
 
-function PolicyFile_parse(policyfile_obj, text) {
+function PolicyFile_replace_includes(policy_file) {
+
+    const replace_includes = term_list => {
+        for (const i in term_list) {
+            const term = term_list[i];
+            if (term.name?.startsWith("PLACEHOLDER-INCLUDE-")) {
+                term_list[i] = { "include": term.rules.comment };
+            }
+        }
+    }
+
+    if (policy_file.is_include) {
+        replace_includes(policy_file.contents);
+    } else {
+        for (const filter of policy_file.contents) {
+            replace_includes(filter.terms);
+        }
+    }
+}
+
+function PolicyFile_parse(policy_file, text) {
     const chars = new CharStream(text); // replace this with a FileStream as required
     const lexer = new PolicyLexer(chars);
     const tokens = new CommonTokenStream(lexer);
@@ -44,7 +72,7 @@ function PolicyFile_parse(policyfile_obj, text) {
     // TODO if policyfile_obj.is_include, try to parse using parser.rule_list();
     // We can someday fall back to parser.header(), parser.term(), parser.filter(), but
     // support is needed on the Aerleon side.
-    const tree = parser.policy();
+    const tree = policy_file.is_include ? parser.term_list() : parser.policy();
     // console.log(tokens.tokens.map(tk => `${PolicyParser.symbolicNames[tk.type]}, ${chars.getText(tk.start, tk.stop)}`));
     const visitor = new PolicyParseTreeVisitor();
     return visitor.visit(tree);
@@ -54,21 +82,18 @@ function PolicyFile_parse(policyfile_obj, text) {
 class PolicyFile {
     filename = null
     is_include = false
-    placeholder_count = 0
     contents = null
 
     constructor(filename, text, is_include = false) {
         this.filename = filename;
         this.is_include = is_include;
 
-        ({ text, placeholder_count: this.placeholder_count } = PolicyFile_preprocess_include(text));
+        text = PolicyFile_preprocess_includes(text);
         this.contents = PolicyFile_parse(this, text);
+        PolicyFile_replace_includes(this);
     }
 
     toYAML() {
-        // convert this.contents to YAML
-        // TODO temp
-        // return JSON.stringify(this.contents, null, 2);
         return stringify(this.contents);
     }
 }
@@ -76,14 +101,16 @@ class PolicyFile {
 
 
 // main
-const DEFAULT_INPUT_FILENAME = './policies/pol/sample_k8s.pol';
+const DEFAULT_INPUT_FILENAME = 'policies/includes/untrusted-networks-blocking.inc';
+// const DEFAULT_INPUT_FILENAME = 'policies/pol/sample_msmpc.pol'; 
+// const DEFAULT_INPUT_FILENAME = './policies/pol/sample_k8s.pol';
 function demo(argv) {
     // glob
     // const glob = [];
     // for (const filename of glob) {
     const filename = argv[2] ?? DEFAULT_INPUT_FILENAME;
     const text = fs.readFileSync(filename)?.toString();
-    const pf = new PolicyFile(filename, text);
+    const pf = new PolicyFile(filename, text, true);
     console.log(pf.toYAML());
     // }
 }
