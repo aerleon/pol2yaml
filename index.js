@@ -109,7 +109,8 @@ class PolicyFile {
 
 // const DEFAULT_INPUT_FILENAME = 'policies/includes/untrusted-networks-blocking.inc';
 // const DEFAULT_INPUT_FILENAME = 'policies/pol/sample_msmpc.pol';
-const DEFAULT_INPUT_FILENAME = 'policies/pol/sample_multitarget.pol';
+// const DEFAULT_INPUT_FILENAME = 'policies/pol/sample_gcp_hf.pol';
+const DEFAULT_INPUT_FILENAME = 'policies/pol/sample_srx.pol';
 // const DEFAULT_INPUT_FILENAME = './policies/pol/sample_k8s.pol';
 function demo(argv) {
     const filename = argv[2] ?? DEFAULT_INPUT_FILENAME;

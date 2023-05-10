@@ -1,4 +1,3 @@
-import { Parser } from 'yaml';
 import PolicyParser from './antlr/PolicyParser.js';
 import PolicyVisitor from './antlr/PolicyVisitor.js';
 
@@ -35,16 +34,19 @@ function collate(rules) {
 
         // preprocess map-like rules into mappings here (TARGET, VERBATIM)
         // preprocess string-like rules into strings here (COMMENT, VERBATIM)
-        if (rule.type[2]?.map) {
+        if (collation === JoinType.STRING_CONCAT) {
+            rule.data = rule.data[0];
+
+        } else if (rule.type[2]?.tuple_list) {
+            rule.data = rule.data[0][0];
+
+        } else if (rule.type[2]?.map) {
             platform = rule.data[0];
             let rhs = rule.data.slice(1);
             if (collation === JoinType.PLATFORM_STRING_CONCAT) {
                 rhs = rhs[0];
             }
             rule.data = { [platform]: rhs };
-            
-        } else if (collation === JoinType.STRING_CONCAT) {
-            rule.data = rule.data[0];
         }
 
         // assemble result
@@ -98,6 +100,39 @@ function collate(rules) {
     return result;
 }
 
+// collapse lists
+// - most lists should be collapsed
+// - some lists cannot be collapsed
+// - long lists should not be collapsed
+// - map/append types have 2nd-level lists
+function collapse(rules) {
+
+    const collapse = list => list.join(' ');
+
+    for (const rule_key in rules) {
+        const rule = rules[rule_key];
+        const collation = rule.type[2]?.join_type ?? JoinType.default;
+
+        if (rule.type[2]?.no_collapse ?? false) {
+            continue;
+        }
+
+        // special case for list of tuples
+        if (rule.type[2]?.tuple_list) {
+
+            rule.data = rule.data.map(tuple => `(${tuple[0]},${tuple[1]})`);
+        } else if (Array.isArray(rule.data)) {
+            rule.data = collapse(rule.data);
+
+            // collapse each inner list
+        } else if (rule.type[2]?.map && collation !== JoinType.PLATFORM_STRING_CONCAT) {
+            for (const platform in rule.data) {
+                rule.data[platform] = collapse(rule.data[platform]);
+            }
+        }
+    }
+}
+
 // Model
 export class Filter {
     before_comment = null
@@ -108,7 +143,7 @@ export class Filter {
     toYAMLNode(doc) {
         const header_node = this.header?.toYAMLNode(doc) ?? null;
         const term_nodes = this.terms?.map(term => term.toYAMLNode(doc)) ?? null;
-        const filter_node = doc.createNode({header: header_node, terms: term_nodes});
+        const filter_node = doc.createNode({ header: header_node, terms: term_nodes });
 
         if (this.before_comment ?? false) {
             filter_node.commentBefore = this.before_comment;
@@ -121,8 +156,8 @@ export class Filter {
     }
 
     toJSON() {
-        const {header, terms} = this;
-        return {header, terms};
+        const { header, terms } = this;
+        return { header, terms };
     }
 }
 
@@ -136,7 +171,7 @@ export class Header {
         if (this.before_comment ?? false) {
             node.commentBefore = this.before_comment;
         }
-        
+
         return node;
     }
 
@@ -158,14 +193,14 @@ export class Term {
         if (this.before_comment ?? false) {
             node.commentBefore = this.before_comment;
         }
-        
+
         if (this.after_comment ?? false) {
             node.comment = this.after_comment;
         }
 
         return node;
     }
-    
+
     toJSON() {
         const { name } = this;
         return {
@@ -291,7 +326,7 @@ export class RuleType extends Enum {
     static NEXT_IP = new RuleType("NEXT_IP", "next-ip", { "join_type": JoinType.LAST_WINS })
     static HOP_LIMIT = new RuleType("HOP_LIMIT", "hop-limit", { "join_type": JoinType.LAST_WINS })
     static LOG_NAME = new RuleType("LOG_NAME", "log_name", { "join_type": JoinType.LAST_WINS })
-    static FLEXIBLE_MATCH_RANGE = new RuleType("FLEXIBLE_MATCH_RANGE", "flexible-match-range")
+    static FLEXIBLE_MATCH_RANGE = new RuleType("FLEXIBLE_MATCH_RANGE", "flexible-match-range", { "join_type": JoinType.PLATFORM_FIRST_WINS, "map": true })
     static ESPFX = new RuleType("ESPFX", "source-prefix-except")
     static EDPFX = new RuleType("EDPFX", "destination-prefix-except")
     static FORWARDING_CLASS_EXCEPT = new RuleType("FORWARDING_CLASS_EXCEPT", "forwarding-class-except", { "no_collapse": true })
@@ -301,7 +336,7 @@ export class RuleType extends Enum {
     static PRIORITY = new RuleType("PRIORITY", "priority", { "join_type": JoinType.LAST_WINS })
     static TTL = new RuleType("TTL", "ttl", { "join_type": JoinType.LAST_WINS })
     static LOG_LIMIT = new RuleType("LOG_LIMIT", "log-limit", { "join_type": JoinType.LAST_WINS })
-    static TARGET_RESOURCES = new RuleType("TARGET_RESOURCES", "target-resources", { "no_collapse": true })
+    static TARGET_RESOURCES = new RuleType("TARGET_RESOURCES", "target-resources", { "tuple_list": true })
     static TARGET_SERVICE_ACCOUNTS = new RuleType("TARGET_SERVICE_ACCOUNTS", "target-service-accounts")
     static ENCAPSULATE = new RuleType("ENCAPSULATE", "encapsulate", { "join_type": JoinType.LAST_WINS })
     static FILTER_TERM = new RuleType("FILTER_TERM", "filter-term", { "join_type": JoinType.LAST_WINS })
@@ -320,7 +355,7 @@ function getTokensBetweenChildren(ctx, types) {
     return ctx.children.slice(1).map((_, i) => {
         const comment_tokens = tokens.getTokens(
             ctx.children[i].stop.tokenIndex + 1,
-            ctx.children[i+1].start.tokenIndex,
+            ctx.children[i + 1].start.tokenIndex,
             types
         );
 
@@ -392,7 +427,7 @@ export default class PolicyParseTreeVisitor extends PolicyVisitor {
         const filter = new Filter();
         filter.header = header;
         filter.terms = terms;
-        
+
         // scan for comment tokens in the inter-children token range
         // attach any to the first term (before_comment)
         const [comments] = getTokensBetweenChildren(ctx, line_comment_filter);
@@ -415,13 +450,13 @@ export default class PolicyParseTreeVisitor extends PolicyVisitor {
 
     visitTerm_list(ctx) {
         const child_productions = this.visitChildren(ctx);
-        
+
         // scan for comment tokens in the inter-children token ranges
         // attach any to the following child term (before_comment)
         getTokensBetweenChildren(ctx, line_comment_filter).forEach((comments, i) => {
             if (comments ?? false) {
-            // before_comment may already exist (or not)
-                child_productions[i+1].before_comment = [comments, child_productions[i+1].before_comment].join('');
+                // before_comment may already exist (or not)
+                child_productions[i + 1].before_comment = [comments, child_productions[i + 1].before_comment].join('');
             }
         });
 
@@ -439,8 +474,10 @@ export default class PolicyParseTreeVisitor extends PolicyVisitor {
     }
 
     visitRule_list(ctx) {
-        const rules = this.visitChildren(ctx);
-        return collate(rules);
+        const child_productions = this.visitChildren(ctx);
+        const rules = collate(child_productions);
+        collapse(rules);
+        return rules;
     }
 
     visitPolicy_rule(ctx) {
@@ -503,22 +540,25 @@ export default class PolicyParseTreeVisitor extends PolicyVisitor {
     visitZero_or_more_tuples(ctx) {
         const child_productions = this.visitChildren(ctx);
 
-        // There are five possible production types
-        if (child_productions.length <= 1) {
-            // zero or one case (children array pass-thru)
-            return child_productions;
+        // empty case
+        if (child_productions.length < 1) {
+            return [];
 
+        // single tuple case
+        } else if (child_productions.length == 1) {
+            return [child_productions];
+
+        // list extension (no comma)
         } else if (child_productions.length == 2) {
-            // two case (extend list)
             child_productions[0].push(child_productions[1]);
             return child_productions[0];
 
+        // surrounded list
         } else if (child_productions[0].getText() == '[') {
-            // three case (surrounded list)
             return child_productions[1];
 
+        // list extension (comma)
         } else {
-            // three case (extend list)
             child_productions[0].push(child_productions[2]);
             return child_productions[0];
         }
@@ -528,24 +568,6 @@ export default class PolicyParseTreeVisitor extends PolicyVisitor {
         const child_productions = this.visitChildren(ctx);
         // TODO assert STRING only
         return [child_productions[1], child_productions[3]];
-    }
-
-    visitFlex_match_key_values(ctx) {
-        // TODO assert additional validations
-
-        const child_productions = this.visitChildren(ctx);
-        const result = {};
-        for (const pair of child_productions) {
-            result[pair[0]] = pair[1];
-        }
-        return result;
-    }
-
-    visitFlex_match_pair(ctx) {
-        // : STRING (HEX | INTEGER | STRING)
-
-        // TODO validate here
-        return this.visitChildren(ctx);
     }
 
     visitValue(ctx) {
