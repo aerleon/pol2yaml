@@ -124,7 +124,7 @@ tuple_list_lhs
     ;
 
 flexible_match_rule
-    : flexible_match_lhs ':' ':' flex_match_key_values
+    : flexible_match_lhs ':' ':' STRING (HEX | INTEGER | STRING)
     ;
 
 flexible_match_lhs
@@ -152,6 +152,7 @@ vpn_lhs
 // NOTE: Lovingly copied from policy.py, warts and all. The purpose of
 // this grammar is to import policy files, which means parsing odd policy
 // files that take advantage of the weirdness in the original grammar.
+// Note that policy.py crashes on some weird inputs.
 zero_or_more_tuples
     : '[' zero_or_more_tuples ']'
     | zero_or_more_tuples ',' tuple
@@ -164,13 +165,6 @@ tuple
     : '(' STRING ',' STRING ')'
     ;
 
-flex_match_key_values
-    : flex_match_pair*
-    ;
-
-flex_match_pair
-    : STRING (HEX | INTEGER | STRING)
-    ;
 
 
 // TOKENS

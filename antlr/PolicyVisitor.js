@@ -144,18 +144,6 @@ export default class PolicyVisitor extends antlr4.tree.ParseTreeVisitor {
 	}
 
 
-	// Visit a parse tree produced by PolicyParser#flex_match_key_values.
-	visitFlex_match_key_values(ctx) {
-	  return this.visitChildren(ctx);
-	}
-
-
-	// Visit a parse tree produced by PolicyParser#flex_match_pair.
-	visitFlex_match_pair(ctx) {
-	  return this.visitChildren(ctx);
-	}
-
-
 	// Visit a parse tree produced by PolicyParser#value.
 	visitValue(ctx) {
 	  return this.visitChildren(ctx);
