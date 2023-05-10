@@ -4,7 +4,7 @@ import * as fs from 'node:fs';
 import { CharStream, CommonTokenStream } from 'antlr4';
 import PolicyLexer from './antlr/PolicyLexer.js';
 import PolicyParser from './antlr/PolicyParser.js';
-import { Document } from 'yaml';
+import { Document, visit } from 'yaml';
 
 import PolicyParseTreeVisitor from './visitor.js';
 import { IncludeTerm } from './visitor.js';
@@ -100,6 +100,15 @@ class PolicyFile {
             const filter_nodes = this.contents?.map(filter => filter.toYAMLNode(doc)) ?? null;
             doc.set('filters', filter_nodes);
         }
+
+        // touch up presentation: apply block_literal formatting to comments
+        visit(doc, {
+            Pair(_, value) {
+                if (value.key == "comment") {
+                    value.value.type = 'BLOCK_LITERAL';
+                }
+            }
+        });
 
         return String(doc);
     }
