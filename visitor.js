@@ -68,7 +68,9 @@ function collate(rules) {
 
                 case JoinType.LAST_WINS:
                     // overwrite
-                    // TODO warn user
+                    // warn user
+                    console.warn(`WARNING: pol2yaml ignoring dead code: ${rule_key}:: ${JSON.stringify(result_rule)}`);
+
                     result_rule.data = rule.data;
                     break;
 
@@ -76,7 +78,9 @@ function collate(rules) {
                     // (TARGET)
                     if (Object.hasOwn(result_rule.data, platform)) {
                         // discard rule
-                        // TODO warn user
+                        // warn user
+                        console.warn(`WARNING: pol2yaml ignoring dead code: ${rule.type[1]}:: ${JSON.stringify(rule)}`);
+
                     } else {
                         result_rule.data[platform] = rule.data[platform];
                     }
