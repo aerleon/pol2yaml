@@ -1,0 +1,134 @@
+filters:
+  - header:
+      comment: |-
+        this is a sample edge input filter that generates
+        msmpc output formats.
+      target:
+        msmpc: edge-inbound mixed ingress
+    terms:
+      - include: includes/untrusted-networks-blocking.inc
+      - name: permit-mail-services
+        destination-address: MAIL_SERVERS
+        protocol: tcp
+        destination-port: MAIL_SERVICES
+        action: accept
+      - name: permit-web-services
+        destination-address: WEB_SERVERS
+        protocol: tcp
+        destination-port: WEB_SERVICES
+        action: accept
+      - name: permit-tcp-established
+        destination-address: MAIL_SERVERS WEB_SERVERS PUBLIC_NAT
+        protocol: tcp
+        option:
+          - tcp-established
+        action: accept
+      - name: permit-udp-established
+        destination-address: MAIL_SERVERS WEB_SERVERS PUBLIC_NAT
+        protocol: udp
+        source-port: HIGH_PORTS
+        action: accept
+      - name: default-deny
+        action: deny
+        logging: "true"
+  - header:
+      comment: |-
+        this is a sample inet edge input filter that generates
+        msmpc output formats.
+      target:
+        msmpc: edge-inbound-ipv4 inet ingress
+    terms:
+      - include: includes/untrusted-networks-blocking.inc
+      - name: permit-mail-services
+        destination-address: MAIL_SERVERS
+        protocol: tcp
+        destination-port: MAIL_SERVICES
+        action: accept
+      - name: permit-web-services
+        destination-address: WEB_SERVERS
+        protocol: tcp
+        destination-port: WEB_SERVICES
+        action: accept
+      - name: permit-tcp-established
+        destination-address: MAIL_SERVERS WEB_SERVERS PUBLIC_NAT
+        protocol: tcp
+        option:
+          - tcp-established
+        action: accept
+      - name: permit-udp-established
+        destination-address: MAIL_SERVERS WEB_SERVERS PUBLIC_NAT
+        protocol: udp
+        source-port: HIGH_PORTS
+        action: accept
+      - name: default-deny
+        action: deny
+        logging: "true"
+  - header:
+      comment: |-
+        this is a sample inet6 edge input filter that generates
+        msmpc output formats.
+      target:
+        msmpc: edge-inbound-ipv6 inet6 ingress
+    terms:
+      - include: includes/untrusted-networks-blocking.inc
+      - name: permit-mail-services
+        destination-address: MAIL_SERVERS
+        protocol: tcp
+        destination-port: MAIL_SERVICES
+        action: accept
+      - name: permit-web-services
+        destination-address: WEB_SERVERS
+        protocol: tcp
+        destination-port: WEB_SERVICES
+        action: accept
+      - name: permit-tcp-established
+        destination-address: MAIL_SERVERS WEB_SERVERS PUBLIC_NAT
+        protocol: tcp
+        option:
+          - tcp-established
+        action: accept
+      - name: permit-udp-established
+        destination-address: MAIL_SERVERS WEB_SERVERS PUBLIC_NAT
+        protocol: udp
+        source-port: HIGH_PORTS
+        action: accept
+      - name: default-deny
+        action: deny
+        logging: "true"
+  - header:
+      comment: |-
+        this is a sample msmpc output filter
+      target:
+        msmpc: edge-outbound mixed egress
+    terms:
+      - name: deny-to-bad-destinations
+        destination-address: RFC1918 BOGON RESERVED
+        action: deny
+      - name: default-accept
+        action: accept
+  - header:
+      comment: |-
+        this is a sample msmpc input-output filter
+      target:
+        msmpc: edge-outbound mixed
+    terms:
+      - name: deny-to-bad-destinations
+        destination-address: RFC1918 BOGON RESERVED
+        action: deny
+      - name: permit-mail-services
+        destination-address: MAIL_SERVERS
+        protocol: tcp
+        destination-port: MAIL_SERVICES
+        action: accept
+      - name: permit-web-services
+        destination-address: WEB_SERVERS
+        protocol: tcp
+        destination-port: WEB_SERVICES
+        action: accept
+      - name: permit-mail-outbound
+        source-address: MAIL_SERVERS WEB_SERVERS PUBLIC_NAT
+        protocol: tcp udp
+        action: accept
+      - name: default-deny
+        action: deny
+        logging: "true"

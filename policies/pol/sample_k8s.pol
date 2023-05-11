@@ -7,6 +7,11 @@ header {
   target:: k8s
 }
 
+# test in between comment
+# line 2
+
+# line 3
+
 term test-ssh {
   # This is a comment
   comment:: "Allow SSH access to all pods from company."
@@ -16,6 +21,8 @@ term test-ssh {
   destination-port:: SSH
   action:: accept
 }
+
+# inter-term comment
 
 term test-web {
   comment:: "Allow HTTP to pods"

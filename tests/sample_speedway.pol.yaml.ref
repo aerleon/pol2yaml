@@ -1,0 +1,67 @@
+filters:
+  - header:
+      comment: |-
+        Sample policy for Speedway Iptables.
+        Speedway generates iptables output suitable for loading
+        using the iptables-restore command
+      target:
+        speedway: INPUT DROP
+    terms:
+      - name: base-allow-est-in
+        option:
+          - established
+        action: accept
+      - name: base-allow-icmp-in
+        protocol: icmp
+        icmp-type: echo-request
+        action: accept
+      - name: base-traceroute-in
+        protocol: udp
+        source-port: TRACEROUTE
+        destination-port: HIGH_PORTS
+        action: accept
+      - name: base-allow-ssh-in
+        source-address: INTERNAL
+        protocol: tcp
+        destination-port: SSH
+        action: accept
+  - header:
+      comment: |-
+        Sample output filter policy for Speedway Iptables.
+      target:
+        speedway: OUTPUT DROP
+    terms:
+      - name: base-allow-lo0-out
+        comment: |-
+          Allow all loopback communications
+        verbatim:
+          speedway: '"-A OUTPUT -o lo -j ACCEPT"'
+      - name: base-allow-est-out
+        option:
+          - established
+        action: accept
+      - name: base-allow-dns-query-out
+        protocol: udp
+        destination-port: DNS
+        action: accept
+      - name: base-allow-icmp-out
+        protocol: icmp
+        action: accept
+      - name: base-traceroute-out
+        protocol: udp
+        destination-port: TRACEROUTE
+        source-port: HIGH_PORTS
+        action: accept
+      - name: base-allow-ssh-out
+        destination-address: INTERNAL
+        protocol: tcp
+        destination-port: SSH
+        action: accept
+  - header:
+      comment: |-
+        Sample forwarding filter policy for Speedway Iptables.
+      target:
+        speedway: FORWARD DROP
+    terms:
+      - name: base-forwarding-deny
+        action: reject

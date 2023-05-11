@@ -1,0 +1,120 @@
+filters:
+  # This is an example policy for aerleon
+
+
+  - header:
+      # [pol2yaml] The following term contained comments. Original text:
+      #header {
+      #  comment:: # Example field-line comment
+      #    "this is a sample edge input filter that generates"   # End of line comment
+      #  comment #Also weird
+      #  : # Weird comment
+      #  : "multiple output formats."
+      #  # NOTES: iptables produces filter 'lines' that must be used as args to the
+      #  # '$ iptables' cmd, while Speedway produces stateful iptables filters
+      #  # compatible with iptables-restore (most people will prefer speedway)
+      #  target:: juniper edge-inbound inet
+      #  target:: juniperevo # This comment addresses just the value 'juniperevo'
+      #          edge-inbound inet6 ingress
+      #  target:: msmpc edge-inbound mixed ingress
+      #  target:: cisco edge-inbound mixed
+      #  target:: speedway INPUT
+      #  target:: ciscoasa asa_in
+      #  target:: demo edge-inbound
+      #  target:: arista edge-inbound
+      #  target:: arista_tp edge-inbound
+      #  target:: brocade edge-inbound
+      #  target:: cisconx edge-inbound
+      #  target:: ciscoxr edge-inbound
+      #}
+      comment: |-
+        this is a sample edge input filter that generates
+        multiple output formats.
+      target:
+        juniper: edge-inbound inet
+        juniperevo: edge-inbound inet6 ingress
+        msmpc: edge-inbound mixed ingress
+        cisco: edge-inbound mixed
+        speedway: INPUT
+        ciscoasa: asa_in
+        demo: edge-inbound
+        arista: edge-inbound
+        arista_tp: edge-inbound
+        brocade: edge-inbound
+        cisconx: edge-inbound
+        ciscoxr: edge-inbound
+    terms:
+      - include: includes/untrusted-networks-blocking.inc
+      # [pol2yaml] The following term contained comments. Original text:
+      #term permit-mail-services {
+      #  # FIELD COMMENT START 1
+      #  destination-address:: MAIL_SERVERS
+      #  protocol:: tcp # LINE COMMENT 3 # COMMENT 4
+      #  # FIELD COMMENT 1
+      #  destination-port:: MAIL_SERVICES
+      #  action:: accept
+      #  # FIELD COMMENT END 1
+      #}
+      - name: permit-mail-services
+        destination-address: MAIL_SERVERS
+        protocol: tcp
+        destination-port: MAIL_SERVICES
+        action: accept
+      # TERM COMMENT 2
+
+      - name: permit-web-services
+        destination-address: WEB_SERVERS
+        protocol: tcp
+        destination-port: WEB_SERVICES
+        action: accept
+      - name: permit-tcp-established
+        destination-address: MAIL_SERVERS WEB_SERVERS PUBLIC_NAT
+        protocol: tcp
+        option:
+          - tcp-established
+        action: accept
+      - name: permit-udp-established
+        destination-address: MAIL_SERVERS WEB_SERVERS PUBLIC_NAT
+        protocol: udp
+        source-port: HIGH_PORTS
+        action: accept
+      - name: default-deny
+        action: deny
+  # This is an example pre-header comment
+
+  - header:
+      # [pol2yaml] The following term contained comments. Original text:
+      #header { # Example header-line comment
+      #  comment:: "this is a sample output filter"
+      #  target:: juniper edge-outbound
+      #  target:: msmpc edge-outbound mixed egress
+      #  target:: arista_tp edge-outbound
+      #  target:: cisco edge-outbound mixed
+      #  target:: speedway OUTPUT
+      #  target:: ciscoasa asa_out
+      #}
+      comment: |-
+        this is a sample output filter
+      target:
+        juniper: edge-outbound
+        msmpc: edge-outbound mixed egress
+        arista_tp: edge-outbound
+        cisco: edge-outbound mixed
+        speedway: OUTPUT
+        ciscoasa: asa_out
+    terms:
+      # This is an example above-a-term comment
+
+      - name: deny-to-bad-destinations
+        destination-address: RFC1918 BOGON RESERVED
+        action: deny
+      # [pol2yaml] The following term contained comments. Original text:
+      #term default-accept { # Example term-line comment
+      #  # Example term list comment
+      #  action:: accept
+      #}
+      - name: default-accept
+        action: accept
+
+    # This is an example end-of-file comment
+

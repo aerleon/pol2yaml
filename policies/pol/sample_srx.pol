@@ -19,6 +19,16 @@ term test-icmp {
   logging:: true
 }
 
+term test-flexible-match {
+  protocol:: tcp
+  flexible-match-range:: bit-length 8
+  flexible-match-range:: range 0x08
+  flexible-match-range:: match-start payload
+  flexible-match-range:: byte-offset 16
+  flexible-match-range:: bit-offset 7
+  action:: accept
+}
+
 term default-deny {
   action:: deny
   logging:: true

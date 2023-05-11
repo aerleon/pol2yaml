@@ -1,0 +1,48 @@
+filters:
+  - header:
+      comment: |-
+        Accepts DHCP, DNS, HTTPS, SMTP.
+        Denies access to internal addressing.
+      target:
+        openconfig: inet
+    terms:
+      - name: accept-dhcp
+        comment: |-
+          Optional - allow DHCP requests.
+        destination-port: DHCP
+        protocol: udp
+        action: accept
+      - name: accept-from-googledns
+        comment: |-
+          Allow name resolution responses from Google DNS.
+        source-address: GOOGLE_DNS
+        destination-address: INTERNAL
+        source-port: DNS
+        protocol: tcp udp
+        action: accept
+      - name: sport-dport
+        comment: |-
+          DENY SMTP.
+        destination-address: INTERNAL
+        source-address: BOGON
+        source-port: SMTP
+        destination-port: SMTP
+        protocol: tcp
+        action: deny
+      - name: deny-saddr
+        comment: |-
+          Deny everything from bogons.
+        source-address: BOGON
+        action: deny
+      - name: ssh-to-internal
+        comment: |-
+          Allow SSH to Internal from Internal.
+        source-address: INTERNAL
+        destination-address: INTERNAL
+        destination-port: SSH
+        protocol: tcp
+        action: accept
+      - name: default-deny
+        comment: |-
+          Deny what's left.
+        action: deny

@@ -4,7 +4,9 @@
 header {
   comment:: # Example field-line comment
     "this is a sample edge input filter that generates"   # End of line comment
-  comment:: "multiple output formats."
+  comment #Also weird
+  : # Weird comment
+  : "multiple output formats."
   # NOTES: iptables produces filter 'lines' that must be used as args to the
   # '$ iptables' cmd, while Speedway produces stateful iptables filters
   # compatible with iptables-restore (most people will prefer speedway)
