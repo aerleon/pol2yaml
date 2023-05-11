@@ -1,5 +1,8 @@
 import {describe, test} from "node:test";
 import assert from "node:assert";
+
+import assertSnapshot from "snapshot-assertion";
+
 import PolicyFile from "../lib/policy.js";
 
 
@@ -26,31 +29,26 @@ term deny-all {
     action:: deny
 }`;
 
-const TEST_SIMPLE_INC_YAML = `terms:
-  - name: deny-all
-    action: deny
-`;
-
 describe("Convert .pol files", () => {
     const TEST_MATRIX = [
-        {name:"Simple policy", pol: TEST_SIMPLE_POL, yaml: TEST_SIMPLE_YAML}
+        {name:"Simple policy", key: "simple_policy", pol: TEST_SIMPLE_POL}
     ];
-    for (const {name, pol, yaml} of TEST_MATRIX) {
-        test(name, t => {
+    for (const {name, key, pol} of TEST_MATRIX) {
+        test(name, async t => {
             const output = new PolicyFile('', pol, false).toYAML();
-            assert.strictEqual(output, yaml);
+            await assertSnapshot(output, `tests/${key}.yaml.ref`);
         });
     }
 });
 
 describe("Convert .inc files", () => {
     const TEST_MATRIX = [
-        {name:"Simple term list", pol: TEST_SIMPLE_INC, yaml: TEST_SIMPLE_INC_YAML}
+        {name:"Simple term list", key: "simple_term_list", pol: TEST_SIMPLE_INC}
     ];
-    for (const {name, pol, yaml} of TEST_MATRIX) {
-        test(name, t => {
+    for (const {name, key, pol} of TEST_MATRIX) {
+        test(name, async t => {
             const output = new PolicyFile('', pol, true).toYAML();
-            assert.strictEqual(output, yaml);
+            await assertSnapshot(output, `tests/${key}.yaml.ref`);
         });
     }
 });

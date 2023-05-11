@@ -1,0 +1,7 @@
+filters:
+  - header:
+      target:
+        srx: from-zone A to-zone B
+    terms:
+      - name: deny-all
+        action: deny
