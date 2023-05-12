@@ -1,0 +1,14 @@
+terms:
+  - name: vpn-term-1
+    destination-address: SOME_HOST
+    protocol: tcp
+    action: accept
+    vpn:
+      name: good-vpn-4
+      policy: policy-4
+  - name: vpn-term-2
+    destination-address: SOME_HOST
+    protocol: tcp
+    action: accept
+    vpn:
+      name: good-vpn-3
