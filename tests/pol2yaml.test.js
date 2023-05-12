@@ -51,7 +51,7 @@ term vpn-term-2 {
 
 test("Convert .pol files", async t => {
     const TEST_MATRIX = [
-        {name:"Simple policy", key: "simple_policy", pol: TEST_SIMPLE_POL}
+        {name:"Simple policy", key: "test_simple_policy.pol", pol: TEST_SIMPLE_POL}
     ];
 
     const pol_dir = './policies/pol/';
@@ -73,9 +73,9 @@ test("Convert .pol files", async t => {
 
 test("Convert .inc files", async t => {
     const TEST_MATRIX = [
-        {name:"Simple term list", key: "simple_term_list", pol: TEST_SIMPLE_INC},
-        {name:"Flexible match term list", key: "flex_match", pol: TEST_JUNIPER_FLEX_MATCH},
-        {name:"VPN term list", key: "vpn", pol: TEST_VPN}
+        {name:"Simple term list", key: "test_simple_term_list.inc", pol: TEST_SIMPLE_INC},
+        {name:"Flexible match term list", key: "test_flex_match.inc", pol: TEST_JUNIPER_FLEX_MATCH},
+        {name:"VPN term list", key: "test_vpn.inc", pol: TEST_VPN}
     ];
 
     const pol_dir = './policies/includes/';
