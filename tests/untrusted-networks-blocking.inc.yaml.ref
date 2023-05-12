@@ -10,7 +10,7 @@ terms:
     action: deny
   #comment above
 
-  - include: test/file.inc
+  - include: arista_terms_include.yaml
   #comment below
 
   - name: deny-from-reserved

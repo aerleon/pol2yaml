@@ -44,7 +44,7 @@ filters:
         cisconx: edge-inbound
         ciscoxr: edge-inbound
     terms:
-      - include: includes/untrusted-networks-blocking.inc
+      - include: includes/untrusted-networks-blocking.yaml
       # [pol2yaml] The following term contained comments. Original text:
       #term permit-mail-services {
       #  # FIELD COMMENT START 1

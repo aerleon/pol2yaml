@@ -1,6 +1,6 @@
 import * as fs from "node:fs/promises";
 import { join } from 'node:path';
-import {describe, test} from "node:test";
+import { test } from "node:test";
 
 import assertSnapshot from "snapshot-assertion";
 
@@ -49,9 +49,13 @@ term vpn-term-2 {
 }
 `;
 
+const TEST_INCLUDE = `
+#include path/to/file.inc
+`;
+
 test("Convert .pol files", async t => {
     const TEST_MATRIX = [
-        {name:"Simple policy", key: "test_simple_policy.pol", pol: TEST_SIMPLE_POL}
+        { name: "Simple policy", key: "test_simple_policy.pol", pol: TEST_SIMPLE_POL }
     ];
 
     const pol_dir = './policies/pol/';
@@ -59,13 +63,13 @@ test("Convert .pol files", async t => {
     for (const file_name of example_files) {
         if (/.pol$/.test(file_name)) {
             const contents = await fs.readFile(join(pol_dir, file_name));
-            TEST_MATRIX.push({name: `Example file ${file_name}`, key: file_name, pol: String(contents)});
+            TEST_MATRIX.push({ name: `Example file ${file_name}`, key: file_name, pol: String(contents) });
         }
     }
 
-    for (const {name, key, pol} of TEST_MATRIX) {
+    for (const { name, key, pol } of TEST_MATRIX) {
         await t.test(name, async t => {
-            const output = new PolicyFile('', pol, false).toYAML();
+            const output = new PolicyFile(pol, { is_include: false }).toYAML();
             await assertSnapshot(output, `tests/${key}.yaml.ref`);
         });
     }
@@ -73,9 +77,9 @@ test("Convert .pol files", async t => {
 
 test("Convert .inc files", async t => {
     const TEST_MATRIX = [
-        {name:"Simple term list", key: "test_simple_term_list.inc", pol: TEST_SIMPLE_INC},
-        {name:"Flexible match term list", key: "test_flex_match.inc", pol: TEST_JUNIPER_FLEX_MATCH},
-        {name:"VPN term list", key: "test_vpn.inc", pol: TEST_VPN}
+        { name: "Simple term list", key: "test_simple_term_list.inc", pol: TEST_SIMPLE_INC },
+        { name: "Flexible match term list", key: "test_flex_match.inc", pol: TEST_JUNIPER_FLEX_MATCH },
+        { name: "VPN term list", key: "test_vpn.inc", pol: TEST_VPN }
     ];
 
     const pol_dir = './policies/includes/';
@@ -83,14 +87,21 @@ test("Convert .inc files", async t => {
     for (const file_name of example_files) {
         if (/.inc$/.test(file_name)) {
             const contents = await fs.readFile(join(pol_dir, file_name));
-            TEST_MATRIX.push({name: `Example file ${file_name}`, key: file_name, pol: String(contents)});
+            TEST_MATRIX.push({ name: `Example file ${file_name}`, key: file_name, pol: String(contents) });
         }
     }
 
-    for (const {name, key, pol} of TEST_MATRIX) {
+    for (const { name, key, pol } of TEST_MATRIX) {
         await t.test(name, async t => {
-            const output = new PolicyFile('', pol, true).toYAML();
+            const output = new PolicyFile(pol, { is_include: true }).toYAML();
             await assertSnapshot(output, `tests/${key}.yaml.ref`);
         });
     }
+
+    await t.test("#include extension replacement", async t => {
+        const output_replace = new PolicyFile(TEST_INCLUDE, { is_include: true, fix_include_names: true }).toYAML();
+        await assertSnapshot(output_replace, `tests/test_inc_replace.yaml.ref`);
+        const output_noreplace = new PolicyFile(TEST_INCLUDE, { is_include: true, fix_include_names: false }).toYAML();
+        await assertSnapshot(output_noreplace, `tests/test_inc_noreplace.yaml.ref`);
+    })
 });

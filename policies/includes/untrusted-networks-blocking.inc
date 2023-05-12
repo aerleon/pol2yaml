@@ -9,7 +9,7 @@ term deny-from-bogons {
 }
 
 #comment above
-#include "test/file.inc"
+#include "arista_terms_include.inc"
 #comment below
 
 term deny-from-reserved {
