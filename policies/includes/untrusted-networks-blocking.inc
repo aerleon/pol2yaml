@@ -8,9 +8,7 @@ term deny-from-bogons {
   action:: deny
 }
 
-#comment above
-#include "arista_terms_include.inc"
-#comment below
+# between terms
 
 term deny-from-reserved {
   source-address:: RESERVED
