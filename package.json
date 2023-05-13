@@ -4,9 +4,9 @@
   "description": "pol2yaml - convert Capirca policy and net/svc files to YAML",
   "exports": "./index.js",
   "type": "module",
+  "main": "lib/policy",
   "scripts": {
-    "test": "node --test tests/**/*.js",
-    "ts": "nodemon --exec ./node_modules/.bin/ts-node -- ./index.ts"
+    "test": "node --test"
   },
   "repository": {
     "type": "git",

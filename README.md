@@ -216,3 +216,23 @@ Options:
                         When set to 'auto' the file extension will be used
                         to determine the type.
 ```
+
+## Programmatic Usage
+
+A JavaScript interface is available with the same capabilities as the command line script.
+
+```javascript
+import PolicyFile from "pol2yaml";
+
+
+// original policy file text.
+const text = '';
+// set to 'true' if this is an include file (not a complete policy file).
+const is_include = false;
+// set to 'false' to disable adjusting file name extensions - see --no-fix-include .
+const fix_include_names = true;
+
+// the converted file text
+const yaml = (new PolicyFile(text, { is_include, fix_include_names })).toYAML();
+
+```
