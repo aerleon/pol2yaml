@@ -2,6 +2,8 @@
 
 Convert a .pol or .inc policy file into an equivalent YAML policy file.
 
+
+
 ## Example
 
 Given policy file shown here, "sample_speedway.pol", pol2yaml can convert this to an equivalent YAML file.
@@ -153,6 +155,8 @@ filters:
         action: reject
 ```
 
+
+
 ## FAQ
 
 * ### Is rule order preserved within terms?
@@ -163,7 +167,36 @@ Rules are ordered within a term or header by order of first appearance in the or
 
 Yes, file comments placed at the top level (outside of a term or header block) appear in the same position in the YAML file. If a term or header block has file comments inside of it, the whole block is preserved as a comment in the YAML file.
 
+* ### Are file names referenced by #include directives altered?
+
+Yes, if an #include directive references a file name with the ".inc" extension, the file name will appear in the YAML output with the extension changed to ".yaml". You can disable this behavior with the `--no-fix-includes` flag.
+
+
+
+## Usage
+
 ```
-// TODO cli should display usage
-// TODO cli should display --help
+pol2yaml: Convert a .pol or .inc policy file into an equivalent YAML policy file.
+
+Usage: pol2yaml [options] file
+
+Examples:
+
+    npx pol2yaml policy.pol > policy.yaml
+    npx pol2yaml terms_include.inc > terms_include.yaml
+
+Options:
+
+    --help              Display this message and exit.
+
+    --no-fix-include    By default, if an #include directive references a file
+                        name with the .inc extension, the file name will appear
+                        in the YAML output with the extension changed to
+                        ".yaml". This flag leaves the file name unchanged.
+
+    --type              Default 'auto'. Options include 'auto', 'policy',
+                        'include'. Specify whether the input is a full
+                        policy file ('policy') or a partial file ('include').
+                        When set to 'auto' the file extension will be used
+                        to determine the type.
 ```
