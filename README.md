@@ -159,6 +159,22 @@ filters:
 
 ## FAQ
 
+* ### How can I check that the converted files are correct?
+
+It is a very good idea to test that the converted files produce identical firewall confs
+when processed by Aerleon. You can do this manually or use the provided `scripts/sanitycheck.sh` script like so:
+
+```
+$ ./scripts/sanitycheck.sh -b path/to/base_dir/
+[SanityCheck] Converting contents of policies/ to YAML with pol2yaml...
+[SanityCheck] Running aclgen on converted policy files..
+[SanityCheck] Running aclgen on original policy files...
+[SanityCheck] Diffing generated configs...
+[SanityCheck] Done
+```
+
+No difference should be found between the aclgen output for the original and converted policy files.
+
 * ### Is rule order preserved within terms?
 
 Rules are ordered within a term or header by order of first appearance in the original term or header. In most cases this preserves the order exactly.

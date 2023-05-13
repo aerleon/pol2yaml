@@ -9,14 +9,20 @@
 # python3 -m pip install --user pipx
 #
 
+base_dir=.
 verbose=false
 
-while getopts v flag
+while getopts b:v flag
 do
     case "${flag}" in
+        b) base_dir=${OPTARG};;
         v) verbose=true;;
     esac
 done
+
+if [ "$base_dir" != "." ] ; then
+    cd "$base_dir"
+fi
 
 tmpdir=$(mktemp -d 2>/dev/null || mktemp -d -t 'tmpdir')
 pol_dir="$tmpdir/pol_output/"
@@ -59,7 +65,6 @@ echo "[SanityCheck] Diffing generated configs..."
 
 diff -r $yaml_dir $pol_dir
 
-# find $tmpdir
 rm -Rf $tmpdir
 
 echo "[SanityCheck] Done"
