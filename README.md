@@ -187,7 +187,11 @@ Yes, file comments placed at the top level (outside of a term or header block) a
 
 Yes, if an #include directive references a file name with the ".inc" extension, the file name will appear in the YAML output with the extension changed to ".yaml". You can disable this behavior with the `--no-fix-includes` flag.
 
+* ### Can this convert multiple files at a time?
 
+The current version is very bare-bones and processes a single file. An example of 
+recursively converting every policy and include file in a directory using `find -exec`
+can be found [here](./scripts/sanitycheck.sh#L41-L42).
 
 ## Usage
 
