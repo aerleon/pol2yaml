@@ -6,7 +6,7 @@ filters:
   - header:
       comment: |-
         Noverbose + custom priority policy example
-      target:
+      targets:
         nftables: mixed OUTPUT 300 noverbose
     terms:
       - name: default-accept
@@ -16,7 +16,7 @@ filters:
   - header:
       comment: |-
         Inbound traffic nftables policy example
-      target:
+      targets:
         newnftables: inet INPUT
     terms:
       - name: allow-anything
@@ -24,7 +24,7 @@ filters:
   - header:
       comment: |-
         2 Inbound traffic nftables policy example
-      target:
+      targets:
         newnftables: inet INPUT ACCEPT
     terms:
       - name: allow-anything
@@ -32,7 +32,7 @@ filters:
   - header:
       comment: |-
         Outbound dual-stack traffic nftables policy example
-      target:
+      targets:
         newnftables: mixed OUTPUT
     terms:
       - name: default-deny
@@ -54,7 +54,7 @@ filters:
   - header:
       comment: |-
         Outbound IPv6 traffic nftables policy example
-      target:
+      targets:
         newnftables: inet6 OUTPUT
     terms:
       - name: default-deny
@@ -62,7 +62,7 @@ filters:
   - header:
       comment: |-
         Priority outbound IPv6
-      target:
+      targets:
         newnftables: inet6 OUTPUT 100
     terms:
       - name: awesome-term
@@ -82,7 +82,7 @@ filters:
   - header:
       comment: |-
         This policy expected to test every combination of REQUIRED keywords.
-      target:
+      targets:
         newnftables: inet INPUT
     terms:
       - name: test-icmp

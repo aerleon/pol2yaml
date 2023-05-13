@@ -6,7 +6,7 @@ filters:
   - header:
       comment: |-
         this is a sample policy to generate GCE filter
-      target:
+      targets:
         gce: global/networks/default inet
     terms:
       - name: test-ssh
@@ -76,7 +76,7 @@ filters:
   - header:
       comment: |-
         this is a sample policy to generate EGRESS GCE filter
-      target:
+      targets:
         gce: EGRESS global/networks/default inet
     terms:
       - name: test-egress-address

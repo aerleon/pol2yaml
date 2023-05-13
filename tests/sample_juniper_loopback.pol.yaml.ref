@@ -2,7 +2,7 @@ filters:
   - header:
       comment: |-
         Sample Juniper lookback filter
-      target:
+      targets:
         juniper: LOOPBACK
     terms:
       - name: accept-icmp

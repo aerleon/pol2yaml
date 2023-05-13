@@ -2,7 +2,7 @@ filters:
   - header:
       comment: |-
         Denies all traffic to internal IPs except established tcp replies.
-      target:
+      targets:
         packetfilter: allowtointernet
     terms:
       - name: accept-dhcp

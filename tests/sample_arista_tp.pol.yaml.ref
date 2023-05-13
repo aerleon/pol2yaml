@@ -2,7 +2,7 @@ filters:
   - header:
       comment: |-
         sample arista traffic policy
-      target:
+      targets:
         arista_tp: MIXED-TRAFFIC-POLICY mixed
     terms:
       - name: accept-icmp

@@ -132,7 +132,7 @@ flexible_match_lhs
     ;
 
 verbatim_rule
-    : verbatim_lhs ':' ':' platform=STRING text=(DOUBLE_QUOTED_STRING | ESCAPED_STRING)
+    : verbatim_lhs ':' ':' platform=STRING text=value
     ;
 
 verbatim_lhs

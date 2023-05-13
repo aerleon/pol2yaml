@@ -6,7 +6,7 @@ filters:
   - header:
       comment: |-
         This policy expected to test every combination of REQUIRED keywords.
-      target:
+      targets:
         nftables: mixed INPUT
     terms:
       - name: multi-all-families

@@ -3,7 +3,7 @@ filters:
       comment: |-
         this is a sample edge input filter that generates
         msmpc output formats.
-      target:
+      targets:
         msmpc: edge-inbound mixed ingress
     terms:
       - include: includes/untrusted-networks-blocking.yaml
@@ -35,7 +35,7 @@ filters:
       comment: |-
         this is a sample inet edge input filter that generates
         msmpc output formats.
-      target:
+      targets:
         msmpc: edge-inbound-ipv4 inet ingress
     terms:
       - include: includes/untrusted-networks-blocking.yaml
@@ -67,7 +67,7 @@ filters:
       comment: |-
         this is a sample inet6 edge input filter that generates
         msmpc output formats.
-      target:
+      targets:
         msmpc: edge-inbound-ipv6 inet6 ingress
     terms:
       - include: includes/untrusted-networks-blocking.yaml
@@ -98,7 +98,7 @@ filters:
   - header:
       comment: |-
         this is a sample msmpc output filter
-      target:
+      targets:
         msmpc: edge-outbound mixed egress
     terms:
       - name: deny-to-bad-destinations
@@ -109,7 +109,7 @@ filters:
   - header:
       comment: |-
         this is a sample msmpc input-output filter
-      target:
+      targets:
         msmpc: edge-outbound mixed
     terms:
       - name: deny-to-bad-destinations

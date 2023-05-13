@@ -1,6 +1,6 @@
 filters:
   - header:
-      target:
+      targets:
         srx: from-zone A to-zone B
     terms:
       - name: deny-all

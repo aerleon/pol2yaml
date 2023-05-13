@@ -1,6 +1,6 @@
 filters:
   - header:
-      target:
+      targets:
         ipset: OUTPUT DROP
     terms:
       - name: deny-to-reserved

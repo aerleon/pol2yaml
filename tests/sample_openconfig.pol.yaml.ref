@@ -3,7 +3,7 @@ filters:
       comment: |-
         Accepts DHCP, DNS, HTTPS, SMTP.
         Denies access to internal addressing.
-      target:
+      targets:
         openconfig: inet
     terms:
       - name: accept-dhcp

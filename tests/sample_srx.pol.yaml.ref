@@ -3,7 +3,7 @@ filters:
       comment: |-
         this is a sample policy to generate Juniper SRX filter
         from zone Untrust to zone DMZ.
-      target:
+      targets:
         srx: from-zone Untrust to-zone DMZ
     terms:
       - name: test-tcp
@@ -17,15 +17,6 @@ filters:
         icmp-type: echo-request echo-reply
         action: accept
         logging: "true"
-      - name: test-flexible-match
-        protocol: tcp
-        flexible-match-range:
-          bit-length: "8"
-          range: "0x08"
-          match-start: payload
-          byte-offset: "16"
-          bit-offset: "7"
-        action: accept
       - name: default-deny
         action: deny
         logging: "true"

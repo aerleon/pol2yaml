@@ -5,7 +5,7 @@ filters:
   # NOTE: makes sure zone names correspond to those specified in your firewall setup
 
   - header:
-      target:
+      targets:
         paloalto: from-zone internal to-zone external
     terms:
       - name: ping-gdns
@@ -25,7 +25,7 @@ filters:
         protocol: tcp
         action: accept
   - header:
-      target:
+      targets:
         paloalto: from-zone external to-zone internal
     terms:
       - name: allow-icmp

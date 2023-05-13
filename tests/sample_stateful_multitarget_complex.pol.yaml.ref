@@ -9,7 +9,7 @@ filters:
         this is a sample policy for a zone based filter that generates
         multiple output formats. It checks tcp and udp rules are correctly
         generated for a large number of IPv4 IPs.
-      target:
+      targets:
         paloalto: from-zone internal to-zone external
         srx: from-zone internal to-zone external
     terms:
@@ -25,7 +25,7 @@ filters:
         this is a sample policy for a zone based filter that generates
         multiple output formats. It checks tcp and udp rules are correctly
         generated for a large number of IPv6 IPs.
-      target:
+      targets:
         paloalto: from-zone internal to-zone external inet6
         srx: from-zone internal to-zone external inet6
     terms:
@@ -41,7 +41,7 @@ filters:
         this is a sample policy for a zone based filter that generates
         multiple output formats. It checks tcp and udp rules are correctly
         generated for a large number of mixed IPs.
-      target:
+      targets:
         paloalto: from-zone untrust to-zone external mixed
         srx: from-zone internal to-zone external mixed
     terms:

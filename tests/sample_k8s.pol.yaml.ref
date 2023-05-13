@@ -6,7 +6,7 @@ filters:
   - header:
       comment: |-
         this is a sample policy to generate Kubernetes NetworkPolicy filter
-      target:
+      targets:
         k8s: ""
     terms:
       # test in between comment
@@ -67,7 +67,7 @@ filters:
   - header:
       comment: |-
         this is a sample policy to generate EGRESS Kubernetes NetworkPolicy filter
-      target:
+      targets:
         k8s: EGRESS
     terms:
       - name: test-egress-address

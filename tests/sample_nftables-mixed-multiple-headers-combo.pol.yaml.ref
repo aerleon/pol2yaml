@@ -4,7 +4,7 @@ filters:
   - header:
       comment: |-
         Noverbose + custom priority policy example
-      target:
+      targets:
         nftables: mixed INPUT 300
     terms:
       - name: multi-all-families
@@ -20,7 +20,7 @@ filters:
   - header:
       comment: |-
         Noverbose + custom priority policy example
-      target:
+      targets:
         newnftables: mixed INPUT 400
     terms:
       - name: test-tcp-icmp
@@ -32,7 +32,7 @@ filters:
   - header:
       comment: |-
         Noverbose + custom priority policy example
-      target:
+      targets:
         newnftables: mixed OUTPUT
     terms:
       - name: test-icmp

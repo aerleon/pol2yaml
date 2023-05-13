@@ -9,7 +9,7 @@ filters:
         this is a sample policy for a zone based filter that generates
         multiple output formats. It checks logging options, tcp, udp
         and icmp type options.
-      target:
+      targets:
         paloalto: from-zone internal to-zone external
         srx: from-zone internal to-zone external
     terms:
@@ -69,7 +69,7 @@ filters:
         this is a sample policy for a zone based filter that generates
         multiple output formats. It checks tcp-established and udp 
         established options.
-      target:
+      targets:
         paloalto: from-zone external to-zone internal
         srx: from-zone external to-zone internal
     terms:
@@ -104,7 +104,7 @@ filters:
       comment: |-
         this is a sample policy for a zone based filter that generates
         multiple output formats. It checks inet6 options and icmpv6.
-      target:
+      targets:
         paloalto: from-zone internal to-zone external inet6
         srx: from-zone internal to-zone external inet6
     terms:
@@ -130,7 +130,7 @@ filters:
       comment: |-
         this is a sample policy for a zone based filter that generates
         multiple output formats. It checks inet6 options.
-      target:
+      targets:
         paloalto: from-zone external to-zone internal inet6
         srx: from-zone external to-zone internal inet6
     terms:
@@ -165,7 +165,7 @@ filters:
       comment: |-
         this is a test policy for a zone based filter that generates
         multiple output formats. It checks inet6 options for IPv4 rules.
-      target:
+      targets:
         paloalto: from-zone unknown to-zone internal inet6
         srx: from-zone unknown to-zone internal inet6
     terms:
@@ -194,7 +194,7 @@ filters:
       comment: |-
         this is a test policy for a zone based filter that generates
         multiple output formats. It checks inet options for IPv6 rules.
-      target:
+      targets:
         paloalto: from-zone unknown to-zone internal inet
         srx: from-zone unknown to-zone internal inet
     terms:

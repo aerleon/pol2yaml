@@ -4,7 +4,7 @@ filters:
         Sample policy for Speedway Iptables.
         Speedway generates iptables output suitable for loading
         using the iptables-restore command
-      target:
+      targets:
         speedway: INPUT DROP
     terms:
       - name: base-allow-est-in
@@ -28,14 +28,14 @@ filters:
   - header:
       comment: |-
         Sample output filter policy for Speedway Iptables.
-      target:
+      targets:
         speedway: OUTPUT DROP
     terms:
       - name: base-allow-lo0-out
         comment: |-
           Allow all loopback communications
         verbatim:
-          speedway: '"-A OUTPUT -o lo -j ACCEPT"'
+          speedway: -A OUTPUT -o lo -j ACCEPT
       - name: base-allow-est-out
         option:
           - established
@@ -60,7 +60,7 @@ filters:
   - header:
       comment: |-
         Sample forwarding filter policy for Speedway Iptables.
-      target:
+      targets:
         speedway: FORWARD DROP
     terms:
       - name: base-forwarding-deny

@@ -30,7 +30,7 @@ filters:
       comment: |-
         this is a sample edge input filter that generates
         multiple output formats.
-      target:
+      targets:
         juniper: edge-inbound inet
         juniperevo: edge-inbound inet6 ingress
         msmpc: edge-inbound mixed ingress
@@ -95,7 +95,7 @@ filters:
       #}
       comment: |-
         this is a sample output filter
-      target:
+      targets:
         juniper: edge-outbound
         msmpc: edge-outbound mixed egress
         arista_tp: edge-outbound

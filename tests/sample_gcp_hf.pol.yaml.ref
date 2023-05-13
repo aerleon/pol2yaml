@@ -2,7 +2,7 @@ filters:
   - header:
       comment: |-
         This is sample policy for GCP HF
-      target:
+      targets:
         gcp_hf: testhf INGRESS inet beta 200
     terms:
       - name: folder-ssh
@@ -63,7 +63,7 @@ filters:
   - header:
       comment: |-
         This is sample policy for GCP HF
-      target:
+      targets:
         gcp_hf: testhf EGRESS inet 200
     terms:
       - name: folder-smtp

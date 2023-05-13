@@ -7,7 +7,7 @@ filters:
       comment: |-
         This policy validates handling of term.option tcp-established.
         and UDP 'established'
-      target:
+      targets:
         nftables: inet6 INPUT
     terms:
       - name: accept-webserver-traffic

@@ -2,7 +2,7 @@ filters:
   - header:
       comment: |-
         Sample NSXV filter
-      target:
+      targets:
         nsxv: sample_nsxv_filter mixed 1234 securitygroup securitygroupId
     terms:
       - name: accept-icmp

@@ -6,7 +6,7 @@ filters:
         Ideal for some internal lab/testing types of subnets that are
         not well trusted, but allowing internal users to access.
         Apply to ingress interface (to filter traffic coming from lab)
-      target:
+      targets:
         cisco: allowtointernet
     terms:
       - name: accept-dhcp

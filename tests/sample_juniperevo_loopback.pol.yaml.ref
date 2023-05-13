@@ -2,7 +2,7 @@ filters:
   - header:
       comment: |-
         Sample Juniper EVO lookback filter
-      target:
+      targets:
         juniperevo: LOOPBACK inet ingress loopback
     terms:
       - name: accept-icmp

@@ -8,10 +8,7 @@ terms:
       also has multiple entries.
     source-address: BOGON
     action: deny
-  #comment above
-
-  - include: arista_terms_include.yaml
-  #comment below
+  # between terms
 
   - name: deny-from-reserved
     source-address: RESERVED

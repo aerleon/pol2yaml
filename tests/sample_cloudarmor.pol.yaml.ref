@@ -7,7 +7,7 @@ filters:
   - header:
       comment: |-
         This is a sample policy to generate a CloudArmor filter
-      target:
+      targets:
         cloudarmor: mixed
     terms:
       - name: allow-trusted-sources

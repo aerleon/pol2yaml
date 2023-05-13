@@ -2,7 +2,7 @@ filters:
   - header:
       comment: |-
         This is sample IPv6 policy for GCP HF
-      target:
+      targets:
         gcp_hf: testhf INGRESS mixed ga 200
     terms:
       - name: test-folder-ssh-mixed
@@ -89,7 +89,7 @@ filters:
   - header:
       comment: |-
         This is sample IPv6 policy for GCP HF
-      target:
+      targets:
         gcp_hf: testhf EGRESS mixed ga 200
     terms:
       - name: folder-smtp
