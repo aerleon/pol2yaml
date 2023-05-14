@@ -17,10 +17,6 @@ const parseArgsOptions = {
         type: 'boolean',
         default: false
     },
-    'no-overwrite': {
-        type: 'boolean',
-        default: false
-    },
     'output-directory': {
         type: 'string',
         default: '.'
@@ -76,8 +72,6 @@ Options:
                     name with the .inc extension, the file name will appear
                     in the YAML output with the extension changed to
                     ".yaml". This flag leaves the file name unchanged.
-
---no-overwrite      Disable overwriting existing YAML files.
 
 --output-directory  Default: current directory. Sets the output directory
                     where YAML files will be placed.
