@@ -79,9 +79,10 @@ term base-forwarding-deny {
 }
 ```
 
-Convert the file with this command:
+Convert the file with this command. This assumes the file is located in the "./policies" directory.
+Use `--base_directory` to change the target directory as needed.
 ```
-$ npx pol2yaml sample_speedway.pol > sample_speedway.yaml
+$ npx pol2yaml
 ```
 
 The resulting file "sample_speedway.yaml":
@@ -185,40 +186,65 @@ Yes, file comments placed at the top level (outside of a term or header block) a
 
 * ### Are file names referenced by #include directives altered?
 
-Yes, if an #include directive references a file name with the ".inc" extension, the file name will appear in the YAML output with the extension changed to ".yaml". You can disable this behavior with the `--no-fix-includes` flag.
+Yes, if an #include directive references a file name with the ".inc" extension, the file name will appear in the YAML output with the extension changed to ".yaml". You can disable this behavior with the `--no_fix_includes` flag.
 
 * ### Can this convert multiple files at a time?
 
-The current version is very bare-bones and processes a single file. An example of 
-recursively converting every policy and include file in a directory using `find -exec`
-can be found [here](./scripts/sanitycheck.sh#L41-L42).
+Yes, this will convert all .pol and .inc files found in the directory given by `--base_directory` (default is "./policies").
 
 ## Usage
 
 ```
 pol2yaml: Convert a .pol or .inc policy file into an equivalent YAML policy file.
 
-Usage: pol2yaml [options] file
+Usage: pol2yaml [--base_directory DIRECTORY] [-c|--config_file FILE] [--definitions_directory DIRECTORY]
+    [-h|--help] [--no-fix-include] [--output_directory DIRECTORY] [-s|--sanity_check]
 
 Examples:
 
-    npx pol2yaml policy.pol > policy.yaml
-    npx pol2yaml terms_include.inc > terms_include.yaml
+* Recursively convert all .pol and .inc files in base_directory.
+  Original files are left in place. Each YAML files is placed in the same
+  directory as the original file. Run sanity_check after (-s).
+
+    npx pol2yaml -s --base_directory policies/
+
 
 Options:
 
-    --help              Display this message and exit.
+--base_directory    Convert .pol and .inc files found in this directory to
+                    YAML. Original files are left in place. If
+                    --sanity_check is used, base_directory will used when
+                    executing aclgen. Can be set by 'aerleon.yml'.
 
-    --no-fix-include    By default, if an #include directive references a file
-                        name with the .inc extension, the file name will appear
-                        in the YAML output with the extension changed to
-                        ".yaml". This flag leaves the file name unchanged.
+--config_file | -c  Defaults to 'aerleon.yml'. Can set base_directory and
+                    definitions_directory.
 
-    --type              Default 'auto'. Options include 'auto', 'policy',
-                        'include'. Specify whether the input is a full
-                        policy file ('policy') or a partial file ('include').
-                        When set to 'auto' the file extension will be used
-                        to determine the type.
+--definitions_directory
+                    Passed to aclgen when --sanity_check is used.
+
+--help | -h         Display this message and exit.
+
+--no_fix_include    By default, if an #include directive references a file
+                    name with the .inc extension, the file name will appear
+                    in the YAML output with the extension changed to
+                    ".yaml". This flag leaves the file name unchanged.
+
+--output_directory  Default: current directory. Sets the output directory
+                    where YAML files will be placed.
+
+
+--sanity_check | -s Run 'aclgen' on both the original and YAML files and
+                    ensure the results are identical.
+
+                    Sanity check requires that either Aerleon or pipx
+                    are available. To run 'aclgen' it will try each of
+                    the following commands in order:
+
+                        python3 -m aerleon
+
+                        python3 -m pipx run aerleon
+
+                        aclgen
 ```
 
 ## Programmatic Usage
