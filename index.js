@@ -9,25 +9,36 @@ import pol2yaml from './lib/cli.js';
 
 const parseArgsOptions = {
 
+    'base_directory': {
+        type: 'string',
+        default: undefined
+    },
+    'config_file': {
+        type: 'string',
+        short: 'c',
+        default: undefined
+    },
+    'definitions_directory': {
+        type: 'string',
+        default: undefined
+    },
     'help': {
         type: 'boolean',
+        short: 'h',
         default: false
     },
-    'no-fix-include': {
+    'no_fix_include': {
         type: 'boolean',
         default: false
     },
-    'output-directory': {
+    'output_directory': {
         type: 'string',
-        default: '.'
+        default: undefined
     },
-    'sanity-check': {
+    'sanity_check': {
         type: 'boolean',
+        short: 's',
         default: false
-    },
-    'type': {
-        type: 'string',
-        default: 'auto'
     }
 };
 const { values: options, positionals: files } = parseArgs({
@@ -39,44 +50,43 @@ const { values: options, positionals: files } = parseArgs({
 if (options.help) {
     console.log(`pol2yaml: Convert a .pol or .inc policy file into an equivalent YAML policy file.
 
-Usage: pol2yaml [options] [file | directory]...
+Usage: pol2yaml [--base_directory DIRECTORY] [-c|--config_file FILE] [--definitions_directory DIRECTORY]
+    [-h|--help] [--no-fix-include] [--output_directory DIRECTORY] [-s|--sanity_check]
 
 Examples:
 
-* Recursively convert all .pol and .inc files in the current directory.
+* Recursively convert all .pol and .inc files in base_directory.
   Original files are left in place. Each YAML files is placed in the same
-  directory as the original file.
+  directory as the original file. Run sanity_check after (-s).
 
-    npx pol2yaml
+    npx pol2yaml -s --base_directory policies/
 
-* Same as above but for the 'policies' directory.
-
-    npx pol2yaml policies/
-
-* Convert a single file. The output YAML file will be placed in the same
-  directory as the input file and named "example.yaml".
-
-    npx pol2yaml policies/pol/example.pol
-
-* Read a single file from stdin, write to stdout. Useful in conjunction
-  with command line tools like "find -exec".
-
-    cat policy.pol | npx pol2yaml --type=policy > policy.yaml
-    cat terms_include.inc | npx pol2yaml --type=include > terms_include.yaml
 
 Options:
 
---help              Display this message and exit.
+--base_directory    Convert .pol and .inc files found in this directory to
+                    YAML. Original files are left in place. If
+                    --sanity_check is used, base_directory will used when
+                    executing aclgen. Can be set by 'aerleon.yml'.
 
---no-fix-include    By default, if an #include directive references a file
+--config_file | -c  Defaults to 'aerleon.yml'. Can set base_directory and
+                    definitions_directory.
+
+--definitions_directory
+                    Passed to aclgen when --sanity_check is used.
+
+--help | -h         Display this message and exit.
+
+--no_fix_include    By default, if an #include directive references a file
                     name with the .inc extension, the file name will appear
                     in the YAML output with the extension changed to
                     ".yaml". This flag leaves the file name unchanged.
 
---output-directory  Default: current directory. Sets the output directory
+--output_directory  Default: current directory. Sets the output directory
                     where YAML files will be placed.
 
---sanity-check      Run 'aclgen' on both the original and YAML files and
+
+--sanity_check | -s Run 'aclgen' on both the original and YAML files and
                     ensure the results are identical.
 
                     Sanity check requires that either Aerleon or pipx
@@ -88,13 +98,6 @@ Options:
                         python3 -m pipx run aerleon
 
                         aclgen
-
---type              Forces the file type to 'policy' or 'include'. Normally
-                    the file type is 'policy' unless the file extension is
-                    ".inc", in which case it is 'include'. In most cases
-                    this flag is not needed unless opening an include file
-                    with an extension that is not ".inc" or sending an
-                    include file through stdin.
 `)
     process.exit(0);
 }
