@@ -177,7 +177,7 @@ Sanity check passed
 
 No difference should be found between the aclgen output for the original and converted policy files.
 
-Tip: you can specify options `--definitions_directory` and `--config_file` for pol2yaml and these will be passed on to aclgen by the sanity checker.
+Tip: if you specify `--config_file` for pol2yaml and it will be passed on to aclgen by the sanity checker.
 
 * ### Is rule order preserved within terms?
 
