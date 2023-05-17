@@ -1,6 +1,6 @@
 # pol2yaml
 
-Convert a .pol or .inc policy file into an equivalent YAML policy file.
+Convert .pol and .inc policy files into equivalent YAML policy files.
 
 
 
@@ -163,18 +163,21 @@ filters:
 * ### How can I check that the converted files are correct?
 
 It is a very good idea to test that the converted files produce identical firewall confs
-when processed by Aerleon. You can do this manually or use the provided `scripts/sanitycheck.sh` script like so:
+when processed by Aerleon. Use the `--sanity_check` flag to test for correctness. This will run aclgen on both the original policy files (.pol and .inc files) and converted files (.yaml files) and perform a recursive diff to ensure the output is unchanged by the conversion process.
 
 ```
-$ ./scripts/sanitycheck.sh -b path/to/base_dir/
-[SanityCheck] Converting contents of policies/ to YAML with pol2yaml...
-[SanityCheck] Running aclgen on converted policy files..
-[SanityCheck] Running aclgen on original policy files...
-[SanityCheck] Diffing generated configs...
-[SanityCheck] Done
+$ npx pol2yaml --sanity_check
+Converting policies/pol/sample_ipset.pol
+Running sanity check...
+Running original files through aclgen...
+Running YAML files through aclgen...
+Comparing aclgen outputs...
+Sanity check passed
 ```
 
 No difference should be found between the aclgen output for the original and converted policy files.
+
+Tip: you can specify options `--definitions_directory` and `--config_file` for pol2yaml and these will be passed on to aclgen by the sanity checker.
 
 * ### Is rule order preserved within terms?
 
@@ -190,7 +193,7 @@ Yes, if an #include directive references a file name with the ".inc" extension, 
 
 * ### Can this convert multiple files at a time?
 
-Yes, this will convert all .pol and .inc files found in the directory given by `--base_directory` (default is "./policies").
+Yes, this will convert all .pol and .inc files found in the directory given by `--base_directory` (default is "./policies"). Each generated file will be placed in the same directory as its input file unless `--output_directory` is given.
 
 ## Usage
 
