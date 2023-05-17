@@ -116,8 +116,10 @@ WHOIS = 43/udp
 SSH = 22/tcp
 TELNET = 23/tcp
 SMTP = 25/tcp
+# Inter-unit comment
 MAIL_SERVICES = SMTP
                 ESMTP
+# Intra-unit comment
                 SMTP_SSL
                 POP_SSL
 TIME = 37/tcp 37/udp
@@ -125,6 +127,8 @@ TACACS = 49/tcp
 DNS = 53/tcp 53/udp
 BOOTPS = 67/udp   # BOOTP server
 BOOTPC = 68/udp   # BOOTP client
+
+# End of file comment
 `;
 
 test("Convert .svc files", async t => {

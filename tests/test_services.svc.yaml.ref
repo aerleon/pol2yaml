@@ -1,6 +1,7 @@
 services:
+  # Sample naming service definitions
+
   WHOIS:
-    # Sample naming service definitions
     - port: 43
       protocol: udp
   SSH:
@@ -12,9 +13,11 @@ services:
   SMTP:
     - port: 25
       protocol: tcp
+  # Inter-unit comment
   MAIL_SERVICES:
     - name: SMTP
     - name: ESMTP
+    # Intra-unit comment
     - name: SMTP_SSL
     - name: POP_SSL
   TIME:
@@ -33,8 +36,9 @@ services:
   BOOTPS:
     - port: 67
       protocol: udp
-      comment: " BOOTP server"
+      comment: BOOTP server
   BOOTPC:
     - port: 68
       protocol: udp
-      comment: " BOOTP client"
+      comment: BOOTP client
+    # End of file comment
