@@ -1,10 +1,10 @@
 {
   "name": "pol2yaml",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "pol2yaml - convert Capirca policy and net/svc files to YAML",
-  "exports": "./index.js",
+  "exports": "./lib/index.js",
   "type": "module",
-  "main": "lib/policy",
+  "main": "lib/index",
   "scripts": {
     "test": "node --test"
   },

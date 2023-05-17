@@ -1,6 +1,6 @@
 # pol2yaml
 
-Convert .pol and .inc policy files into equivalent YAML policy files.
+Convert .pol, .inc policy files and .svc, .net definitions into equivalent YAML files.
 
 
 
@@ -198,7 +198,7 @@ Yes, this will convert all .pol and .inc files found in the directory given by `
 ## Usage
 
 ```
-pol2yaml: Convert a .pol or .inc policy file into an equivalent YAML policy file.
+pol2yaml: Convert .pol, .inc policy files and .svc, .net definitions into equivalent YAML files.
 
 Usage: pol2yaml [--base_directory DIRECTORY] [-c|--config_file FILE] [--definitions_directory DIRECTORY]
     [-h|--help] [--no-fix-include] [--output_directory DIRECTORY] [-s|--sanity_check]
@@ -215,15 +215,16 @@ Examples:
 Options:
 
 --base_directory    Convert .pol and .inc files found in this directory to
-                    YAML. Original files are left in place. If
-                    --sanity_check is used, base_directory will used when
-                    executing aclgen. Can be set by 'aerleon.yml'.
+                    YAML. Original files are left in place. Can be set in
+                    the 'aerleon.yml' config file.
 
 --config_file | -c  Defaults to 'aerleon.yml'. Can set base_directory and
                     definitions_directory.
 
 --definitions_directory
-                    Passed to aclgen when --sanity_check is used.
+                    Convert .net and .svc files found in this directory to
+                    YAML. Original files are left in place. Can be set in
+                    the 'aerleon.yml' config file.
 
 --help | -h         Display this message and exit.
 
@@ -234,7 +235,6 @@ Options:
 
 --output_directory  Default: current directory. Sets the output directory
                     where YAML files will be placed.
-
 
 --sanity_check | -s Run 'aclgen' on both the original and YAML files and
                     ensure the results are identical.
@@ -255,7 +255,8 @@ Options:
 A JavaScript interface is available with the same capabilities as the command line script.
 
 ```javascript
-import PolicyFile from "pol2yaml";
+// Use PolicyFile to convert .pol and .inc files
+import { PolicyFile } from "pol2yaml";
 
 
 // original policy file text.
@@ -267,5 +268,16 @@ const fix_include_names = true;
 
 // the converted file text
 const yaml = (new PolicyFile(text, { is_include, fix_include_names })).toYAML();
+
+
+// Use DefinitionFile to convert .net and .svc files
+import { DefinitionFile, DefinitionFileType } from "pol2yaml";
+
+const text = '';
+// set according to the input file type
+const type = DefinitionFileType.NET; // or DefinitionFileType.SVC
+
+// the converted file text
+const yaml = (new DefinitionFile(text, type)).toYAML();
 
 ```

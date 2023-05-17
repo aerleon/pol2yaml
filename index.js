@@ -48,7 +48,7 @@ const { values: options, positionals: files } = parseArgs({
 });
 
 if (options.help) {
-    console.log(`pol2yaml: Convert a .pol or .inc policy file into an equivalent YAML policy file.
+    console.log(`pol2yaml: Convert .pol, .inc policy files and .svc, .net definitions into equivalent YAML files.
 
 Usage: pol2yaml [--base_directory DIRECTORY] [-c|--config_file FILE] [--definitions_directory DIRECTORY]
     [-h|--help] [--no-fix-include] [--output_directory DIRECTORY] [-s|--sanity_check]
@@ -65,15 +65,16 @@ Examples:
 Options:
 
 --base_directory    Convert .pol and .inc files found in this directory to
-                    YAML. Original files are left in place. If
-                    --sanity_check is used, base_directory will used when
-                    executing aclgen. Can be set by 'aerleon.yml'.
+                    YAML. Original files are left in place. Can be set in
+                    the 'aerleon.yml' config file.
 
 --config_file | -c  Defaults to 'aerleon.yml'. Can set base_directory and
                     definitions_directory.
 
 --definitions_directory
-                    Passed to aclgen when --sanity_check is used.
+                    Convert .net and .svc files found in this directory to
+                    YAML. Original files are left in place. Can be set in
+                    the 'aerleon.yml' config file.
 
 --help | -h         Display this message and exit.
 
@@ -84,7 +85,6 @@ Options:
 
 --output_directory  Default: current directory. Sets the output directory
                     where YAML files will be placed.
-
 
 --sanity_check | -s Run 'aclgen' on both the original and YAML files and
                     ensure the results are identical.
