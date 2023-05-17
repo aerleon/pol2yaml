@@ -4,6 +4,7 @@ import { test } from "node:test";
 
 import assertSnapshot from "snapshot-assertion";
 
+import DefinitionFile, { DefinitionFileType } from "../lib/defs.js";
 import PolicyFile from "../lib/policy.js";
 
 
@@ -104,4 +105,37 @@ test("Convert .inc files", async t => {
         const output_noreplace = new PolicyFile(TEST_INCLUDE, { is_include: true, fix_include_names: false }).toYAML();
         await assertSnapshot(output_noreplace, `tests/test_inc_noreplace.yaml.ref`);
     })
+});
+
+
+const TEST_SERVICES_SVC = `
+#
+# Sample naming service definitions
+#
+WHOIS = 43/udp
+SSH = 22/tcp
+TELNET = 23/tcp
+SMTP = 25/tcp
+MAIL_SERVICES = SMTP
+                ESMTP
+                SMTP_SSL
+                POP_SSL
+TIME = 37/tcp 37/udp
+TACACS = 49/tcp
+DNS = 53/tcp 53/udp
+BOOTPS = 67/udp   # BOOTP server
+BOOTPC = 68/udp   # BOOTP client
+`;
+
+test("Convert .svc files", async t => {
+    const TEST_MATRIX = [
+        { name: "Service file", key: "test_services.svc", src: TEST_SERVICES_SVC }
+    ];
+
+    for (const { name, key, src } of TEST_MATRIX) {
+        await t.test(name, async t => {
+            const output = new DefinitionFile(src, DefinitionFileType.SVC).toYAML();
+            await assertSnapshot(output, `tests/${key}.yaml.ref`);
+        });
+    }
 });

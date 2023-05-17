@@ -1,0 +1,40 @@
+services:
+  WHOIS:
+    # Sample naming service definitions
+    - port: 43
+      protocol: udp
+  SSH:
+    - port: 22
+      protocol: tcp
+  TELNET:
+    - port: 23
+      protocol: tcp
+  SMTP:
+    - port: 25
+      protocol: tcp
+  MAIL_SERVICES:
+    - name: SMTP
+    - name: ESMTP
+    - name: SMTP_SSL
+    - name: POP_SSL
+  TIME:
+    - port: 37
+      protocol: tcp
+    - port: 37
+      protocol: udp
+  TACACS:
+    - port: 49
+      protocol: tcp
+  DNS:
+    - port: 53
+      protocol: tcp
+    - port: 53
+      protocol: udp
+  BOOTPS:
+    - port: 67
+      protocol: udp
+      comment: " BOOTP server"
+  BOOTPC:
+    - port: 68
+      protocol: udp
+      comment: " BOOTP client"
