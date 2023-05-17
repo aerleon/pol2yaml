@@ -131,14 +131,23 @@ BOOTPC = 68/udp   # BOOTP client
 # End of file comment
 `;
 
-test("Convert .svc files", async t => {
+test("Convert .svc/.net files", async t => {
     const TEST_MATRIX = [
         { name: "Service file", key: "test_services.svc", src: TEST_SERVICES_SVC }
     ];
 
+    const defs = './def/';
+    const example_files = await fs.readdir(defs);
+    for (const file_name of example_files) {
+        if (/\.(net|svc)$/.test(file_name)) {
+            const contents = await fs.readFile(join(defs, file_name));
+            TEST_MATRIX.push({ name: `Example file ${file_name}`, key: file_name, src: String(contents) });
+        }
+    }
     for (const { name, key, src } of TEST_MATRIX) {
         await t.test(name, async t => {
-            const output = new DefinitionFile(src, DefinitionFileType.SVC).toYAML();
+            const type = /\.net$/.test(key) ? DefinitionFileType.NET : DefinitionFileType.SVC;
+            const output = new DefinitionFile(src, type).toYAML();
             await assertSnapshot(output, `tests/${key}.yaml.ref`);
         });
     }
