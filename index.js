@@ -103,4 +103,5 @@ Options:
 }
 
 
-pol2yaml(files, options);
+const code = await pol2yaml(files, options);
+process.exit(code);
