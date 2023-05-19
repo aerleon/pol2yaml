@@ -10,6 +10,11 @@ node --version
 ```
 Tip: if you need to upgrade NodeJS, some have found the following instructions helpful: https://stackoverflow.com/a/10076029.
 
+Once NodeJS is installed you can fetch and run pol2yaml using the following command. npx is a command installed by NodeJS which can fetch and run JavaScript programs from the NPM registry. See [Usage](#usage) for more details.
+```
+npx pol2yaml
+```
+
 ## Example
 
 Given policy file shown here, "sample_speedway.pol", pol2yaml can convert this to an equivalent YAML file.
