@@ -2,7 +2,13 @@
 
 Convert .pol, .inc policy files and .svc, .net definitions into equivalent YAML files.
 
-pol2yaml runs on NodeJS so it can use the excellent YAML processing tools available in JavaScript. While NodeJS is pre-installed on many operating systems, pol2yaml requires version 18 or above. See [installing or upgrading NodeJS](doc/nodejs.md) for help.
+pol2yaml runs on NodeJS so it can use the excellent YAML processing tools available in JavaScript. While NodeJS is pre-installed on many operating systems, pol2yaml requires version 18 or above.
+
+Tip: if you are new to using NodeJS, you can quickly check whether NodeJS is installed and what version you have using:
+```
+node --version
+```
+Tip: if you need to upgrade NodeJS, some have found the following instructions helpful: https://stackoverflow.com/a/10076029.
 
 ## Example
 
