@@ -34,7 +34,7 @@
   },
   "bin": "./index.js",
   "engines": {
-    "node": ">=14.16"
+    "node": ">=18.16"
   },
   "devDependencies": {
     "snapshot-assertion": "^5.0.0"
