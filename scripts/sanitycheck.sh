@@ -8,6 +8,8 @@
 # sudo apt install -y python3-pip python3-venv
 # python3 -m pip install --user pipx
 #
+# NOTE: pol2yaml now can perform sanity checking on its own using the --sanity_check flag.
+# This script is surplus and not as flexible as the built-in sanity checker.
 
 base_dir=.
 verbose=false

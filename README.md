@@ -10,7 +10,7 @@ node --version
 ```
 Tip: if you need to upgrade NodeJS, some have found the following instructions helpful: https://stackoverflow.com/a/10076029.
 
-Once NodeJS is installed you can fetch and run pol2yaml using the following command. npx is a command installed by NodeJS which can fetch and run JavaScript programs from the NPM registry. See [Usage](#usage) for more details.
+Once NodeJS is installed, the following invocation will download and run pol2yaml. npx is a program included with NodeJS which can fetch and run JavaScript programs from the NPM registry. See [Usage](#usage) for more details.
 ```
 npx pol2yaml
 ```
@@ -90,8 +90,16 @@ term base-forwarding-deny {
 }
 ```
 
-Convert the file with this command. This assumes the file is located in the "./policies" directory.
-Use `--base_directory` to change the target directory as needed.
+Place the file in a directory named "policies/".
+
+```
+.
+└── policies
+    └── pol
+        └── sample_speedway.pol
+```
+
+Then run pol2yaml to convert the file.
 ```
 $ npx pol2yaml
 ```
@@ -167,6 +175,15 @@ filters:
         action: reject
 ```
 
+If you want to check that the new YAML file generates the same ACL output, re-run pol2yaml with the `--sanity_check` flag. You will first need to copy the [def/](def/) directory found in this repository to be adjacent to your "policies/" directory like so:
+
+```
+.
+├── def
+└── policies
+    └── pol
+        └── sample_speedway.pol
+```
 
 
 ## FAQ
@@ -174,7 +191,7 @@ filters:
 * ### How can I check that the converted files are correct?
 
 It is a very good idea to test that the converted files produce identical firewall confs
-when processed by Aerleon. Use the `--sanity_check` flag to test for correctness. This will run aclgen on both the original policy files (.pol and .inc files) and converted files (.yaml files) and perform a recursive diff to ensure the output is unchanged by the conversion process.
+when processed by Aerleon. Use the `--sanity_check` flag to test for correctness. This will run aclgen on both the original policy files (.pol, .inc, .net, and .svc files) and converted files (.yaml files) and perform a recursive diff to ensure the output is unchanged by the conversion process.
 
 ```
 $ npx pol2yaml --sanity_check
@@ -186,7 +203,7 @@ Comparing aclgen outputs...
 Sanity check passed
 ```
 
-No difference should be found between the aclgen output for the original and converted policy files.
+No difference should be found between the aclgen output for the original and converted files.
 
 Tip: if you specify `--config_file` for pol2yaml and it will be passed on to aclgen by the sanity checker.
 
