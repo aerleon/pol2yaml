@@ -256,6 +256,11 @@ Options:
 
 --help | -h         Display this message and exit.
 
+--no_collapse       By default, lists will be formatted as space-separated
+                    values on the same line as much as possible. This option
+                    disables this behavior and causes lists to always appear
+                    with one item per line.
+
 --no_fix_include    By default, if an #include directive references a file
                     name with the .inc extension, the file name will appear
                     in the YAML output with the extension changed to

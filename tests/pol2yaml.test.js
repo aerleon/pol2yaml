@@ -5,7 +5,7 @@ import { test } from "node:test";
 import assertSnapshot from "snapshot-assertion";
 
 import DefinitionFile, { DefinitionFileType } from "../lib/defs.js";
-import PolicyFile from "../lib/policy.js";
+import PolicyFile, { PolicyFormatOptions } from "../lib/policy.js";
 
 
 const TEST_SIMPLE_POL = `
@@ -16,6 +16,22 @@ header {
 term deny-all {
     action:: deny
 }`;
+
+const TEST_POL_WITH_LISTS = `
+header {
+    target:: paloalto from-zone internal to-zone external
+    target:: srx from-zone internal to-zone external
+    option:: tcp-established
+}
+
+term test-tcp-udp-many-mixed {
+    comment:: "Testing mixed IPv4 and IPv6 IPs to test address books."
+    source-address:: MANY_IPV4 MANY_IPV6
+    destination-address:: MANY_IPV4 MANY_IPV6
+    protocol:: tcp udp
+    action:: accept
+}
+`;
 
 const TEST_SIMPLE_INC = `
 term deny-all {
@@ -74,6 +90,16 @@ test("Convert .pol files", async t => {
             await assertSnapshot(output, `tests/${key}.yaml.ref`);
         });
     }
+
+    await t.test("no_collapse flag", async t => {
+        // Regardless of format_list setting:
+        // target must always be collapsed
+        // option must always be splayed (even for a single option)
+        const output_replace = new PolicyFile(TEST_POL_WITH_LISTS, { is_include: false }).toYAML();
+        await assertSnapshot(output_replace, `tests/test_pol_collapse.yaml.ref`);
+        const output_noreplace = new PolicyFile(TEST_POL_WITH_LISTS, { is_include: false, format_lists: PolicyFormatOptions.LISTS_SPLAY }).toYAML();
+        await assertSnapshot(output_noreplace, `tests/test_pol_splay.yaml.ref`);
+    })
 });
 
 test("Convert .inc files", async t => {
