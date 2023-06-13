@@ -27,6 +27,10 @@ const parseArgsOptions = {
         short: 'h',
         default: false
     },
+    'no_collapse': {
+        type: 'boolean',
+        default: false
+    },
     'no_fix_include': {
         type: 'boolean',
         default: false
@@ -77,6 +81,11 @@ Options:
                     the 'aerleon.yml' config file.
 
 --help | -h         Display this message and exit.
+
+--no_collapse       By default, lists will be formatted as space-separated
+                    values on the same line as much as possible. This option
+                    disables this behavior and causes lists to always appear
+                    with one item per line.
 
 --no_fix_include    By default, if an #include directive references a file
                     name with the .inc extension, the file name will appear

@@ -1,0 +1,15 @@
+filters:
+  - header:
+      targets:
+        paloalto: from-zone internal to-zone external
+        srx: from-zone internal to-zone external
+      option:
+        - tcp-established
+    terms:
+      - name: test-tcp-udp-many-mixed
+        comment: |-
+          Testing mixed IPv4 and IPv6 IPs to test address books.
+        source-address: MANY_IPV4 MANY_IPV6
+        destination-address: MANY_IPV4 MANY_IPV6
+        protocol: tcp udp
+        action: accept
