@@ -72,7 +72,7 @@ const TEST_INCLUDE = `
 
 test("Convert .pol files", async t => {
     const TEST_MATRIX = [
-        { name: "Simple policy", key: "test_simple_policy.pol", pol: TEST_SIMPLE_POL }
+        { name: "Simple policy", key: "test_policy.simple.pol", pol: TEST_SIMPLE_POL }
     ];
 
     const pol_dir = './policies/pol/';
@@ -104,7 +104,7 @@ test("Convert .pol files", async t => {
 
 test("Convert .inc files", async t => {
     const TEST_MATRIX = [
-        { name: "Simple term list", key: "test_simple_term_list.inc", pol: TEST_SIMPLE_INC },
+        { name: "Simple term list", key: "test_term_list.simple.inc", pol: TEST_SIMPLE_INC },
         { name: "Flexible match term list", key: "test_flex_match.inc", pol: TEST_JUNIPER_FLEX_MATCH },
         { name: "VPN term list", key: "test_vpn.inc", pol: TEST_VPN }
     ];
